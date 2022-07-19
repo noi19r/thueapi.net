@@ -1,8 +1,9 @@
 {
   "name": "icewall-vue",
   "version": "0.0.0",
+  "license": "UNLICENSED",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8080",
     "build": "vite build",
     "preview": "vite preview"
   },
