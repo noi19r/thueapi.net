@@ -57,10 +57,16 @@ export const useSideMenuStore = defineStore('sideMenu', {
           }
         ]
       },
+      'devider',
       {
         icon: 'DatabaseIcon',
         pageName: 'side-menu-pricing',
         title: 'Bảng Giá'
+      },
+      {
+        icon: 'DollarSignIcon',
+        pageName: 'side-menu-deposit',
+        title: 'Nạp Tiền'
       },
       'devider',
       {
