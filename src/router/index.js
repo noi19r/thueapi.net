@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import SideMenu from '../layouts/side-menu/Main.vue'
 import SimpleMenu from '../layouts/simple-menu/Main.vue'
 import TopMenu from '../layouts/top-menu/Main.vue'
@@ -84,6 +85,7 @@ import ZaloPayTransaction from '../views/personal/zalopay/Transaction.vue'
 import Vietcombank from '../views/personal/vietcombank/Main.vue'
 
 import Pricing from '../views/pricing/Main.vue'
+import Deposit from '../views/deposit/Main.vue'
 
 import Profile from '../views/profile/Main.vue'
 
@@ -139,6 +141,12 @@ const routes = [
         name: 'side-menu-pricing',
         component: Pricing
       },
+      {
+        path: 'deposit',
+        name: 'side-menu-deposit',
+        component: Deposit
+      },
+
       {
         path: 'profile',
         name: 'side-menu-profile',
@@ -1172,6 +1180,7 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
+    name: 'error-page',
     component: ErrorPage
   }
 ]
@@ -1182,6 +1191,35 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     return savedPosition || { left: 0, top: 0 }
   }
+})
+
+router.beforeEach((to, from) => {
+  if (
+    to.name != 'error-page' &&
+    to.name != 'login' &&
+    to.name != 'register' &&
+    (!JSON.parse(localStorage.getItem('userInfo')) || !localStorage.getItem('token'))
+  ) {
+    if (from.name == 'login' || from.name == 'register') {
+      return false
+    } else {
+      return { replace: true, name: 'login' }
+    }
+  }
+  if (
+    (to.name == 'login' || to.name == 'register') &&
+    JSON.parse(localStorage.getItem('userInfo')) &&
+    localStorage.getItem('token')
+  ) {
+    return { replace: true, name: 'side-menu-dashboard' }
+  }
+  // if (to.name == 'side-menu-dashboard' && store.state.user.userInfo.permission > 1) {
+  //   return { replace: true, name: 'side-menu-profile' }
+  // }
+})
+
+router.afterEach((to, from) => {
+  document.title = to.meta.title || 'ThueApi'
 })
 
 export default router
