@@ -1,14 +1,17 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
-import App from "./App.vue";
-import router from "./router";
-import globalComponents from "./global-components";
-import utils from "./utils";
-import "./assets/css/app.css";
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import App from './App.vue'
+import router from './router'
+import globalComponents from './global-components'
+import toast from './plugins/toast'
+import utils from './utils'
+import './assets/css/app.css'
 
-const app = createApp(App).use(router).use(createPinia());
+import 'mosha-vue-toastify/dist/style.css'
 
-globalComponents(app);
-utils(app);
+const app = createApp(App).use(router).use(createPinia()).use(toast)
 
-app.mount("#app");
+globalComponents(app)
+utils(app)
+
+app.mount('#app')
