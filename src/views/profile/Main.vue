@@ -12,51 +12,52 @@
           </div>
           <div class="ml-4 mr-auto">
             <div class="font-medium text-base">
-              {{ $f()[0].users[0].name }}
+              {{ userInfo.name }}
             </div>
-            <div class="text-slate-500">{{ $f()[0].jobs[0] }}</div>
+            <div class="text-slate-500">{{ userInfo.roles }}</div>
           </div>
-          <Dropdown>
-            <DropdownToggle tag="a" class="w-5 h-5 block" href="javascript:;">
-              <MoreHorizontalIcon class="w-5 h-5 text-slate-500" />
-            </DropdownToggle>
-            <DropdownMenu class="w-56">
-              <DropdownContent>
-                <DropdownHeader> Export Options</DropdownHeader>
-                <DropdownDivider />
-                <DropdownItem>
-                  <ActivityIcon class="w-4 h-4 mr-2" />
-                  English
-                </DropdownItem>
-                <DropdownItem>
-                  <BoxIcon class="w-4 h-4 mr-2" />
-                  Indonesia
-                  <div class="text-xs text-white px-1 rounded-full bg-danger ml-auto">10</div>
-                </DropdownItem>
-                <DropdownItem>
-                  <LayoutIcon class="w-4 h-4 mr-2" />
-                  English
-                </DropdownItem>
-                <DropdownItem>
-                  <SidebarIcon class="w-4 h-4 mr-2" />
-                  Indonesia
-                </DropdownItem>
-                <DropdownDivider />
-                <DropdownFooter>
-                  <button type="button" class="btn btn-primary py-1 px-2">Settings</button>
-                  <button type="button" class="btn btn-secondary py-1 px-2 ml-auto">View Profile</button>
-                </DropdownFooter>
-              </DropdownContent>
-            </DropdownMenu>
-          </Dropdown>
         </div>
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
-          <a class="flex items-center text-primary font-medium" href="">
-            <ActivityIcon class="w-4 h-4 mr-2" /> Personal Information
+          <a
+            href=""
+            class="flex items-center"
+            :class="{
+              'text-primary font-medium': activeTab == 'info'
+            }"
+            @click.prevent="activeTab = 'info'"
+          >
+            <ActivityIcon class="w-4 h-4 mr-2" /> Thông tin các nhân
           </a>
-          <a class="flex items-center mt-5" href=""> <BoxIcon class="w-4 h-4 mr-2" /> Account Settings </a>
-          <a class="flex items-center mt-5" href=""> <LockIcon class="w-4 h-4 mr-2" /> Change Password </a>
-          <a class="flex items-center mt-5" href=""> <SettingsIcon class="w-4 h-4 mr-2" /> User Settings </a>
+          <a
+            href=""
+            class="flex items-center mt-5"
+            :class="{
+              'text-primary font-medium': activeTab == 'gatepay'
+            }"
+            @click.prevent="activeTab = 'gatepay'"
+          >
+            <BoxIcon class="w-4 h-4 mr-2" /> Hạn sử dụng
+          </a>
+          <a
+            class="flex items-center mt-5"
+            href=""
+            :class="{
+              'text-primary font-medium': activeTab == 'changePass'
+            }"
+            @click.prevent="activeTab = 'changePass'"
+          >
+            <LockIcon class="w-4 h-4 mr-2" /> Đổi mật khẩu
+          </a>
+          <a
+            class="flex items-center mt-5"
+            href=""
+            :class="{
+              'text-primary font-medium': activeTab == 'setting'
+            }"
+            @click.prevent="activeTab = 'setting'"
+          >
+            <SettingsIcon class="w-4 h-4 mr-2" /> Bảo mật 2 lớp
+          </a>
         </div>
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
           <a class="flex items-center" href=""> <ActivityIcon class="w-4 h-4 mr-2" /> Email Settings </a>
@@ -73,7 +74,7 @@
     <!-- END: Profile Menu -->
     <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
       <!-- BEGIN: Display Information -->
-      <div class="intro-y box lg:mt-5">
+      <div class="intro-y box lg:mt-5" v-if="activeTab == 'info'">
         <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
           <h2 class="font-medium text-base mr-auto">Thông tin cá nhân</h2>
         </div>
@@ -89,7 +90,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Input text"
-                      :value="$f()[0].users[0].name"
+                      :value="userInfo.name"
                       disabled
                     />
                   </div>
@@ -100,8 +101,18 @@
                       type="text"
                       class="form-control"
                       placeholder="Input text"
-                      :value="$f()[0].users[0].email"
+                      :value="userInfo.email"
                       disabled
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <label for="update-profile-form-10" class="form-label">Telegram</label>
+                    <input
+                      id="update-profile-form-9"
+                      type="text"
+                      class="form-control"
+                      placeholder="Input text"
+                      :value="userInfo.telegram.username"
                     />
                   </div>
                 </div>
@@ -113,7 +124,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Input text"
-                      :value="`123,123 vnđ`"
+                      :value="`${$h.formatCurrency(userInfo.amount * 10000)} vnđ`"
                       disabled
                     />
                   </div>
@@ -124,19 +135,100 @@
                       type="text"
                       class="form-control"
                       placeholder="Input text"
-                      value="65570828"
+                      :value="userInfo.phone"
+                      disabled
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <label for="update-profile-form-9" class="form-label">ID Telegram</label>
+                    <input
+                      id="update-profile-form-9"
+                      type="text"
+                      class="form-control"
+                      placeholder="Input text"
+                      :value="userInfo.telegram.id"
                       disabled
                     />
                   </div>
                 </div>
+              </div>
+              <div class="flex justify-end mt-4">
+                <button type="button" class="btn btn-primary w-25 mr-auto">Lưu thông tin</button>
+                <a href="" class="text-danger flex items-center">
+                  <Trash2Icon class="w-4 h-4 mr-1" /> Delete Account
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- END: Display Information -->
+
+      <!-- BEGIN: Change Password -->
+      <div class="intro-y box lg:mt-5" v-else-if="activeTab == 'changePass'">
+        <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+          <h2 class="font-medium text-base mr-auto">Đổi Mật Khẩu</h2>
+        </div>
+        <div class="p-5">
+          <form class="validate-form" @submit.prevent="save">
+            <div>
+              <label for="change-password-form-1" class="form-label">Mật khẩu cũ</label>
+              <input
+                id="change-password-form-1"
+                v-model.trim="validate.currentPassword.$model"
+                type="password"
+                name="password"
+                class="form-control"
+                :class="{ 'border-danger': validate.currentPassword.$error }"
+                placeholder="Nhập mật khẩu cũ"
+              />
+              <template v-if="validate.currentPassword.$error">
+                <div v-for="(error, index) in validate.currentPassword.$errors" :key="index" class="text-danger mt-2">
+                  {{ error.$message }}
+                </div>
+              </template>
+            </div>
+            <div class="mt-3">
+              <label for="change-password-form-2" class="form-label">Mật khẩu mới</label>
+              <input
+                id="change-password-form-2"
+                v-model.trim="validate.password.$model"
+                type="password"
+                name="password"
+                class="form-control"
+                :class="{ 'border-danger': validate.password.$error }"
+                placeholder="Nhập mật khẩu mới"
+              />
+              <template v-if="validate.password.$error">
+                <div v-for="(error, index) in validate.password.$errors" :key="index" class="text-danger mt-2">
+                  {{ error.$message }}
+                </div>
+              </template>
+            </div>
+            <div class="mt-3">
+              <label for="change-password-form-3" class="form-label">Nhập lại mật khẩu</label>
+              <input
+                id="change-password-form-3"
+                v-model.trim="validate.surePassword.$model"
+                type="password"
+                name="password"
+                class="form-control"
+                :class="{ 'border-danger': validate.surePassword.$error }"
+                placeholder="Nhập lại mật khẩu mới"
+              />
+              <template v-if="validate.surePassword.$error">
+                <div v-for="(error, index) in validate.surePassword.$errors" :key="index" class="text-danger mt-2">
+                  {{ error.$message }}
+                </div>
+              </template>
+            </div>
+            <button class="btn btn-primary mt-4">Thay đổi mật khẩu</button>
+          </form>
+        </div>
+      </div>
+      <!-- END: Change Password -->
       <!-- BEGIN: Personal Information -->
-      <div class="intro-y box mt-5">
+      <div class="intro-y box lg:mt-5" v-else-if="activeTab == 'gatepay'">
         <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
           <h2 class="font-medium text-base mr-auto">Personal Information</h2>
         </div>
@@ -231,12 +323,127 @@
         </div>
       </div>
       <!-- END: Personal Information -->
+      <!-- BEGIN: 2FA -->
+      <div class="intro-y box lg:mt-5" v-else-if="activeTab == 'setting'">
+        <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+          <h2 class="font-medium text-base mr-auto">Bảo mật 2 lớp - 2FA</h2>
+        </div>
+        <!-- <div class="box">
+          <div class="p-5">
+            <div
+              class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 before:bg-gradient-to-t before:from-black before:to-black/10"
+            >
+              <img
+                alt="Midone - HTML Admin Template"
+                class="rounded-md"
+                :src="'https://api.vietqr.io/970416/222629219/0/NAP3091/970416-222629219-SUdZpzb.jpg?accountName=Nguy%E1%BB%85n%20Tr%E1%BB%8Dng%20V%E1%BB%B9'"
+              />
+            </div>
+            <div class="text-slate-600 dark:text-slate-500 mt-5">
+              <div class="flex items-center"><LinkIcon class="w-4 h-4 mr-2" /> Price: $12</div>
+              <div class="flex items-center mt-2"><LayersIcon class="w-4 h-4 mr-2" /> Remaining Stock: 123123</div>
+              <div class="flex items-center mt-2">
+                <CheckSquareIcon class="w-4 h-4 mr-2" />
+                Status: {{ true ? 'Active' : 'Inactive' }}
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="p-5">
+          <div class="grid grid-cols-12 gap-x-5">
+            <div class="col-span-12 xl:col-span-6" v-if="!userInfo.is2FA">
+              <div>
+                <img alt="Midone - HTML Admin Template" class="rounded-md" width="340" height="340" :src="qrcode" />
+              </div>
+            </div>
+            <div
+              class="col-span-12"
+              :class="{
+                'xl:col-span-6': !userInfo.is2FA
+              }"
+            >
+              <div class="mt-3 xl:mt-0">
+                <label for="update-profile-form-10" class="form-label">Xác nhận OTP</label>
+                <input id="update-profile-form-10" type="text" class="form-control" placeholder="OTP" value="" />
+              </div>
+
+              <div class="flex justify-end mt-4">
+                <button type="button" class="btn btn-primary w-20 mr-auto">
+                  {{ !userInfo.is2FA ? 'Bật 2FA' : 'Tắt 2FA' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END: 2FA -->
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, reactive, toRefs, toRaw } from 'vue'
+import { required, minLength, sameAs } from '@vuelidate/validators'
 
+import { useVuelidate } from '@vuelidate/core'
+
+import { useUserStore } from '@/stores/user'
+import { helper as $h } from '@/utils/helper'
+import { qr2FA, changePassword } from '@/api'
+import { toast } from '../../plugins/toast'
+
+const userStore = useUserStore()
+userStore.setUserInfo()
+
+const userInfo = computed(() => userStore.userInfoMe)
 const select = ref('1')
+const activeTab = ref('info')
+const qrcode = ref('')
+const deleteConfirmationModal = ref(false)
+
+const formData = reactive({
+  currentPassword: '',
+  password: '',
+  surePassword: ''
+})
+
+const rules = computed(() => {
+  return {
+    currentPassword: {
+      required,
+      minLength: minLength(6)
+    },
+    password: {
+      required,
+      minLength: minLength(6)
+    },
+    surePassword: {
+      required,
+      sameAs: sameAs(formData.password)
+    }
+  }
+})
+
+const validate = useVuelidate(rules, toRefs(formData))
+
+const save = async () => {
+  validate.value.$touch()
+  if (validate.value.$invalid) {
+    toast.danger('Vui lòng kiểm tra lại thông tin')
+  } else {
+    let data = toRaw(formData)
+    await changePassword(data)
+
+    toast.success('Thay đổi mật khẩu thành công')
+    // setTimeout(() => router.push({ name: 'login' }), 3000)
+  }
+}
+
+onMounted(async () => {
+  if (!userStore.userInfoMe.is2FA) {
+    let qrImage = await qr2FA()
+
+    qrcode.value = qrImage.image
+  }
+})
 </script>
