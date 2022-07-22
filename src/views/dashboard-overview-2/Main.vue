@@ -4,10 +4,7 @@
       <div class="grid grid-cols-12 gap-6">
         <!-- BEGIN: Notification -->
         <div class="col-span-12 mt-6 -mb-6 intro-y">
-          <Alert
-            class="box bg-primary text-white flex items-center mb-6"
-            v-slot="{ dismiss }"
-          >
+          <Alert class="box bg-primary text-white flex items-center mb-6" v-slot="{ dismiss }">
             <span
               >Introducing new dashboard! Download now at
               <a
@@ -17,12 +14,7 @@
                 >themeforest.net</a
               >.</span
             >
-            <button
-              type="button"
-              class="btn-close text-white"
-              @click="dismiss"
-              aria-label="Close"
-            >
+            <button type="button" class="btn-close text-white" @click="dismiss" aria-label="Close">
               <XIcon class="w-4 h-4" />
             </button>
           </Alert>
@@ -45,10 +37,7 @@
               <div class="px-8 py-12 flex flex-col justify-center flex-1">
                 <ShoppingBagIcon class="w-10 h-10 text-warning" />
                 <div class="relative text-3xl font-medium mt-12 pl-4 ml-0.5">
-                  <span
-                    class="absolute text-2xl font-medium top-0 left-0 -ml-0.5"
-                    >$</span
-                  >
+                  <span class="absolute text-2xl font-medium top-0 left-0 -ml-0.5">$</span>
                   54.143
                 </div>
                 <Tippy
@@ -59,12 +48,9 @@
                   47% <ChevronUpIcon class="w-4 h-4 ml-0.5" />
                 </Tippy>
                 <div class="mt-4 text-slate-500">
-                  Sales earnings this month after associated author fees, &
-                  before taxes.
+                  Sales earnings this month after associated author fees, & before taxes.
                 </div>
-                <button
-                  class="btn btn-outline-secondary relative justify-start rounded-full mt-12"
-                >
+                <button class="btn btn-outline-secondary relative justify-start rounded-full mt-12">
                   Download Reports
                   <span
                     class="w-8 h-8 absolute flex justify-center items-center bg-primary text-white rounded-full right-0 top-0 bottom-0 my-auto ml-auto mr-0.5"
@@ -100,9 +86,7 @@
                     <ChevronDownIcon class="w-4 h-4 ml-0.5" />
                   </Tippy>
                 </div>
-                <div class="text-slate-500 text-xs mt-5">
-                  GROSS RENTAL VALUE
-                </div>
+                <div class="text-slate-500 text-xs mt-5">GROSS RENTAL VALUE</div>
                 <div class="mt-1.5 flex items-center">
                   <div class="text-base">$72.000</div>
                   <Tippy
@@ -113,9 +97,7 @@
                     49% <ChevronUpIcon class="w-4 h-4 ml-0.5" />
                   </Tippy>
                 </div>
-                <div class="text-slate-500 text-xs mt-5">
-                  GROSS RENTAL PROFIT
-                </div>
+                <div class="text-slate-500 text-xs mt-5">GROSS RENTAL PROFIT</div>
                 <div class="mt-1.5 flex items-center">
                   <div class="text-base">$54.000</div>
                   <Tippy
@@ -153,11 +135,7 @@
               <div class="flex items-center">
                 Realtime active users
                 <Dropdown class="ml-auto">
-                  <DropdownToggle
-                    tag="a"
-                    class="w-5 h-5 block -mr-2"
-                    href="javascript:;"
-                  >
+                  <DropdownToggle tag="a" class="w-5 h-5 block -mr-2" href="javascript:;">
                     <MoreVerticalIcon class="w-5 h-5 text-slate-500" />
                   </DropdownToggle>
                   <DropdownMenu class="w-40">
@@ -190,9 +168,7 @@
                   <ReportBarChart :height="79" />
                 </div>
               </div>
-              <div
-                class="text-slate-500 text-xs border-b border-slate-200 flex mb-2 pb-2 mt-4"
-              >
+              <div class="text-slate-500 text-xs border-b border-slate-200 flex mb-2 pb-2 mt-4">
                 <div>Top Active Pages</div>
                 <div class="ml-auto">Active Users</div>
               </div>
@@ -212,28 +188,20 @@
                 <div>/profile…review/24357</div>
                 <div class="ml-auto">21</div>
               </div>
-              <button
-                class="btn btn-outline-secondary border-dashed w-full py-1 px-2 mt-4"
-              >
-                Real-Time Report
-              </button>
+              <button class="btn btn-outline-secondary border-dashed w-full py-1 px-2 mt-4">Real-Time Report</button>
             </div>
           </div>
         </div>
         <!-- END: Visitors -->
         <!-- BEGIN: Users By Age -->
-        <div
-          class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3 mt-2 lg:mt-6 xl:mt-2"
-        >
+        <div class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3 mt-2 lg:mt-6 xl:mt-2">
           <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5">Users By Age</h2>
             <a href="" class="ml-auto text-primary truncate">Show More</a>
           </div>
           <div class="report-box-2 intro-y mt-5">
             <TabGroup class="box p-5">
-              <TabList
-                class="nav-pills w-4/5 bg-slate-100 dark:bg-black/20 rounded-md mx-auto"
-              >
+              <TabList class="nav-pills w-4/5 bg-slate-100 dark:bg-black/20 rounded-md mx-auto">
                 <Tab class="w-full py-1.5 px-2" tag="button">Active</Tab>
                 <Tab class="w-full py-1.5 px-2" tag="button">Inactive</Tab>
               </TabList>
@@ -241,9 +209,7 @@
                 <TabPanel>
                   <div class="relative">
                     <ReportDonutChart :height="208" class="mt-3" />
-                    <div
-                      class="flex flex-col justify-center items-center absolute w-full h-full top-0 left-0"
-                    >
+                    <div class="flex flex-col justify-center items-center absolute w-full h-full top-0 left-0">
                       <div class="text-2xl font-medium">2.501</div>
                       <div class="text-slate-500 mt-0.5">Active Users</div>
                     </div>
@@ -276,21 +242,12 @@
           <div class="intro-y block sm:flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5">Official Store</h2>
             <div class="sm:ml-auto mt-3 sm:mt-0 relative text-slate-500">
-              <MapPinIcon
-                class="w-4 h-4 z-10 absolute my-auto inset-y-0 ml-3 left-0"
-              />
-              <input
-                type="text"
-                class="form-control sm:w-56 box pl-10"
-                placeholder="Filter by city"
-              />
+              <MapPinIcon class="w-4 h-4 z-10 absolute my-auto inset-y-0 ml-3 left-0" />
+              <input type="text" class="form-control sm:w-56 box pl-10" placeholder="Filter by city" />
             </div>
           </div>
           <div class="intro-y box p-5 mt-12 sm:mt-5">
-            <div>
-              250 Official stores in 21 countries, click the marker to see
-              location details.
-            </div>
+            <div>250 Official stores in 21 countries, click the marker to see location details.</div>
             <ReportMap class="report-maps mt-5 bg-slate-200 rounded-md" />
           </div>
         </div>
@@ -298,24 +255,13 @@
         <!-- BEGIN: Weekly Best Sellers -->
         <div class="col-span-12 xl:col-span-4 mt-6">
           <div class="intro-y flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5">
-              Weekly Best Sellers
-            </h2>
+            <h2 class="text-lg font-medium truncate mr-5">Weekly Best Sellers</h2>
           </div>
           <div class="mt-5">
-            <div
-              v-for="(faker, fakerKey) in $_.take($f(), 4)"
-              :key="fakerKey"
-              class="intro-y"
-            >
+            <div v-for="(faker, fakerKey) in $_.take($f(), 4)" :key="fakerKey" class="intro-y">
               <div class="box px-4 py-4 mb-3 flex items-center zoom-in">
-                <div
-                  class="w-10 h-10 flex-none image-fit rounded-md overflow-hidden"
-                >
-                  <img
-                    alt="Midone Tailwind HTML Admin Template"
-                    :src="faker.photos[0]"
-                  />
+                <div class="w-10 h-10 flex-none image-fit rounded-md overflow-hidden">
+                  <img alt="Midone Tailwind HTML Admin Template" :src="faker.photos[0]" />
                 </div>
                 <div class="ml-4 mr-auto">
                   <div class="font-medium">
@@ -325,9 +271,7 @@
                     {{ faker.dates[0] }}
                   </div>
                 </div>
-                <div
-                  class="py-1 px-2 rounded-full text-xs bg-success text-white cursor-pointer font-medium"
-                >
+                <div class="py-1 px-2 rounded-full text-xs bg-success text-white cursor-pointer font-medium">
                   137 Sales
                 </div>
               </div>
@@ -343,21 +287,13 @@
         <!-- BEGIN: Ads 1 -->
         <div class="col-span-12 lg:col-span-6 mt-6">
           <div class="box p-8 relative overflow-hidden bg-primary intro-y">
-            <div
-              class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3"
-            >
+            <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3">
               Transact safely with Lender’s Fund Account (RDL)
             </div>
-            <div
-              class="w-full sm:w-72 leading-relaxed text-white/70 dark:text-slate-500 mt-3"
-            >
+            <div class="w-full sm:w-72 leading-relaxed text-white/70 dark:text-slate-500 mt-3">
               Apply now, quick registration.
             </div>
-            <button
-              class="btn w-32 bg-white dark:bg-darkmode-800 dark:text-white mt-6 sm:mt-10"
-            >
-              Start Now
-            </button>
+            <button class="btn w-32 bg-white dark:bg-darkmode-800 dark:text-white mt-6 sm:mt-10">Start Now</button>
             <img
               class="hidden sm:block absolute top-0 right-0 w-2/5 -mt-3 mr-2"
               alt="Midone Tailwind HTML Admin Template"
@@ -369,29 +305,16 @@
         <!-- BEGIN: Ads 2 -->
         <div class="col-span-12 lg:col-span-6 mt-6">
           <div class="box p-8 relative overflow-hidden intro-y">
-            <div
-              class="leading-[2.15rem] w-full sm:w-52 text-primary dark:text-white text-xl -mt-3"
-            >
+            <div class="leading-[2.15rem] w-full sm:w-52 text-primary dark:text-white text-xl -mt-3">
               Invite friends to get
               <span class="font-medium">FREE</span> bonuses!
             </div>
             <div class="w-full sm:w-60 leading-relaxed text-slate-500 mt-2">
-              Get a IDR 100,000 voucher by inviting your friends to fund
-              #BecomeMember
+              Get a IDR 100,000 voucher by inviting your friends to fund #BecomeMember
             </div>
-            <Tippy
-              tag="div"
-              class="w-48 relative mt-6 cursor-pointer"
-              content="Copy referral link"
-            >
-              <input
-                type="text"
-                class="form-control"
-                value="https://dashboard.in"
-              />
-              <CopyIcon
-                class="absolute right-0 top-0 bottom-0 my-auto mr-4 w-4 h-4"
-              />
+            <Tippy tag="div" class="w-48 relative mt-6 cursor-pointer" content="Copy referral link">
+              <input type="text" class="form-control" value="https://dashboard.in" />
+              <CopyIcon class="absolute right-0 top-0 bottom-0 my-auto mr-4 w-4 h-4" />
             </Tippy>
             <img
               class="hidden sm:block absolute top-0 right-0 w-1/2 mt-1 -mr-12"
@@ -404,19 +327,13 @@
         <!-- BEGIN: Weekly Top Products -->
         <div class="col-span-12 mt-6">
           <div class="intro-y block sm:flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5">
-              Weekly Top Products
-            </h2>
+            <h2 class="text-lg font-medium truncate mr-5">Weekly Top Products</h2>
             <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
-              <button
-                class="btn box flex items-center text-slate-600 dark:text-slate-300"
-              >
+              <button class="btn box flex items-center text-slate-600 dark:text-slate-300">
                 <FileTextIcon class="hidden sm:block w-4 h-4 mr-2" />
                 Export to Excel
               </button>
-              <button
-                class="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300"
-              >
+              <button class="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300">
                 <FileTextIcon class="hidden sm:block w-4 h-4 mr-2" />
                 Export to PDF
               </button>
@@ -434,11 +351,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(faker, fakerKey) in $_.take($f(), 4)"
-                  :key="fakerKey"
-                  class="intro-x"
-                >
+                <tr v-for="(faker, fakerKey) in $_.take($f(), 4)" :key="fakerKey" class="intro-x">
                   <td class="w-40">
                     <div class="flex">
                       <div class="w-10 h-10 image-fit zoom-in">
@@ -471,12 +384,8 @@
                     </div>
                   </td>
                   <td>
-                    <a href="" class="font-medium whitespace-nowrap">{{
-                      faker.products[0].name
-                    }}</a>
-                    <div
-                      class="text-slate-500 text-xs whitespace-nowrap mt-0.5"
-                    >
+                    <a href="" class="font-medium whitespace-nowrap">{{ faker.products[0].name }}</a>
+                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                       {{ faker.products[0].category }}
                     </div>
                   </td>
@@ -486,11 +395,11 @@
                       class="flex items-center justify-center"
                       :class="{
                         'text-success': faker.trueFalse[0],
-                        'text-danger': !faker.trueFalse[0],
+                        'text-danger': !faker.trueFalse[0]
                       }"
                     >
                       <CheckSquareIcon class="w-4 h-4 mr-2" />
-                      {{ faker.trueFalse[0] ? "Active" : "Inactive" }}
+                      {{ faker.trueFalse[0] ? 'Active' : 'Inactive' }}
                     </div>
                   </td>
                   <td class="table-report__action w-56">
@@ -499,18 +408,14 @@
                         <CheckSquareIcon class="w-4 h-4 mr-1" />
                         Edit
                       </a>
-                      <a class="flex items-center text-danger" href="">
-                        <Trash2Icon class="w-4 h-4 mr-1" /> Delete
-                      </a>
+                      <a class="flex items-center text-danger" href=""> <Trash2Icon class="w-4 h-4 mr-1" /> Delete </a>
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div
-            class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3"
-          >
+          <div class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3">
             <nav class="w-full sm:w-auto sm:mr-auto">
               <ul class="pagination">
                 <li class="page-item">
@@ -567,9 +472,7 @@
           <!-- BEGIN: Important Notes -->
           <div class="col-span-12 md:col-span-6 xl:col-span-12 mt-3 2xl:mt-8">
             <div class="intro-x flex items-center h-10">
-              <h2 class="text-lg font-medium truncate mr-auto">
-                Important Notes
-              </h2>
+              <h2 class="text-lg font-medium truncate mr-auto">Important Notes</h2>
               <button
                 data-carousel="important-notes"
                 data-target="prev"
@@ -591,69 +494,39 @@
               <div class="box zoom-in">
                 <TinySlider ref-key="importantNotesRef">
                   <div class="p-5">
-                    <div class="text-base font-medium truncate">
-                      Lorem Ipsum is simply dummy text
-                    </div>
+                    <div class="text-base font-medium truncate">Lorem Ipsum is simply dummy text</div>
                     <div class="text-slate-400 mt-1">20 Hours ago</div>
                     <div class="text-slate-500 text-justify mt-1">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s.
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                      the industry's standard dummy text ever since the 1500s.
                     </div>
                     <div class="font-medium flex mt-5">
-                      <button type="button" class="btn btn-secondary py-1 px-2">
-                        View Notes
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto"
-                      >
-                        Dismiss
-                      </button>
+                      <button type="button" class="btn btn-secondary py-1 px-2">View Notes</button>
+                      <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto">Dismiss</button>
                     </div>
                   </div>
                   <div class="p-5">
-                    <div class="text-base font-medium truncate">
-                      Lorem Ipsum is simply dummy text
-                    </div>
+                    <div class="text-base font-medium truncate">Lorem Ipsum is simply dummy text</div>
                     <div class="text-slate-400 mt-1">20 Hours ago</div>
                     <div class="text-slate-500 text-justify mt-1">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s.
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                      the industry's standard dummy text ever since the 1500s.
                     </div>
                     <div class="font-medium flex mt-5">
-                      <button type="button" class="btn btn-secondary py-1 px-2">
-                        View Notes
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto"
-                      >
-                        Dismiss
-                      </button>
+                      <button type="button" class="btn btn-secondary py-1 px-2">View Notes</button>
+                      <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto">Dismiss</button>
                     </div>
                   </div>
                   <div class="p-5">
-                    <div class="text-base font-medium truncate">
-                      Lorem Ipsum is simply dummy text
-                    </div>
+                    <div class="text-base font-medium truncate">Lorem Ipsum is simply dummy text</div>
                     <div class="text-slate-400 mt-1">20 Hours ago</div>
                     <div class="text-slate-500 text-justify mt-1">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s.
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                      the industry's standard dummy text ever since the 1500s.
                     </div>
                     <div class="font-medium flex mt-5">
-                      <button type="button" class="btn btn-secondary py-1 px-2">
-                        View Notes
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto"
-                      >
-                        Dismiss
-                      </button>
+                      <button type="button" class="btn btn-secondary py-1 px-2">View Notes</button>
+                      <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto">Dismiss</button>
                     </div>
                   </div>
                 </TinySlider>
@@ -662,13 +535,9 @@
           </div>
           <!-- END: Important Notes -->
           <!-- BEGIN: Recent Activities -->
-          <div
-            class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12 mt-3"
-          >
+          <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12 mt-3">
             <div class="intro-x flex items-center h-10">
-              <h2 class="text-lg font-medium truncate mr-5">
-                Recent Activities
-              </h2>
+              <h2 class="text-lg font-medium truncate mr-5">Recent Activities</h2>
               <a href="" class="ml-auto text-primary truncate">Show More</a>
             </div>
             <div
@@ -678,13 +547,8 @@
                 <div
                   class="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5"
                 >
-                  <div
-                    class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden"
-                  >
-                    <img
-                      alt="Midone Tailwind HTML Admin Template"
-                      :src="$f()[9].photos[0]"
-                    />
+                  <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                    <img alt="Midone Tailwind HTML Admin Template" :src="$f()[9].photos[0]" />
                   </div>
                 </div>
                 <div class="box px-5 py-3 ml-4 flex-1 zoom-in">
@@ -701,13 +565,8 @@
                 <div
                   class="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5"
                 >
-                  <div
-                    class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden"
-                  >
-                    <img
-                      alt="Midone Tailwind HTML Admin Template"
-                      :src="$f()[8].photos[0]"
-                    />
+                  <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                    <img alt="Midone Tailwind HTML Admin Template" :src="$f()[8].photos[0]" />
                   </div>
                 </div>
                 <div class="box px-5 py-3 ml-4 flex-1 zoom-in">
@@ -720,33 +579,21 @@
                   <div class="text-slate-500">
                     <div class="mt-1">Added 3 new photos</div>
                     <div class="flex mt-2">
-                      <Tippy
-                        tag="div"
-                        class="w-8 h-8 image-fit mr-1 zoom-in"
-                        :content="$f()[0].products[0].name"
-                      >
+                      <Tippy tag="div" class="w-8 h-8 image-fit mr-1 zoom-in" :content="$f()[0].products[0].name">
                         <img
                           alt="Midone Tailwind HTML Admin Template"
                           class="rounded-md border border-white"
                           :src="$f()[8].images[0]"
                         />
                       </Tippy>
-                      <Tippy
-                        tag="div"
-                        class="w-8 h-8 image-fit mr-1 zoom-in"
-                        :content="$f()[1].products[0].name"
-                      >
+                      <Tippy tag="div" class="w-8 h-8 image-fit mr-1 zoom-in" :content="$f()[1].products[0].name">
                         <img
                           alt="Midone Tailwind HTML Admin Template"
                           class="rounded-md border border-white"
                           :src="$f()[8].images[1]"
                         />
                       </Tippy>
-                      <Tippy
-                        tag="div"
-                        class="w-8 h-8 image-fit mr-1 zoom-in"
-                        :content="$f()[2].products[0].name"
-                      >
+                      <Tippy tag="div" class="w-8 h-8 image-fit mr-1 zoom-in" :content="$f()[2].products[0].name">
                         <img
                           alt="Midone Tailwind HTML Admin Template"
                           class="rounded-md border border-white"
@@ -757,20 +604,13 @@
                   </div>
                 </div>
               </div>
-              <div class="intro-x text-slate-500 text-xs text-center my-4">
-                12 November
-              </div>
+              <div class="intro-x text-slate-500 text-xs text-center my-4">12 November</div>
               <div class="intro-x relative flex items-center mb-3">
                 <div
                   class="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5"
                 >
-                  <div
-                    class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden"
-                  >
-                    <img
-                      alt="Midone Tailwind HTML Admin Template"
-                      :src="$f()[7].photos[0]"
-                    />
+                  <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                    <img alt="Midone Tailwind HTML Admin Template" :src="$f()[7].photos[0]" />
                   </div>
                 </div>
                 <div class="box px-5 py-3 ml-4 flex-1 zoom-in">
@@ -782,9 +622,7 @@
                   </div>
                   <div class="text-slate-500 mt-1">
                     Has changed
-                    <a class="text-primary" href="">{{
-                      $f()[7].products[0].name
-                    }}</a>
+                    <a class="text-primary" href="">{{ $f()[7].products[0].name }}</a>
                     price and description
                   </div>
                 </div>
@@ -793,13 +631,8 @@
                 <div
                   class="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5"
                 >
-                  <div
-                    class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden"
-                  >
-                    <img
-                      alt="Midone Tailwind HTML Admin Template"
-                      :src="$f()[6].photos[0]"
-                    />
+                  <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                    <img alt="Midone Tailwind HTML Admin Template" :src="$f()[6].photos[0]" />
                   </div>
                 </div>
                 <div class="box px-5 py-3 ml-4 flex-1 zoom-in">
@@ -811,9 +644,7 @@
                   </div>
                   <div class="text-slate-500 mt-1">
                     Has changed
-                    <a class="text-primary" href="">{{
-                      $f()[6].products[0].name
-                    }}</a>
+                    <a class="text-primary" href="">{{ $f()[6].products[0].name }}</a>
                     description
                   </div>
                 </div>
@@ -822,26 +653,15 @@
           </div>
           <!-- END: Recent Activities -->
           <!-- BEGIN: Transactions -->
-          <div
-            class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12 mt-3"
-          >
+          <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12 mt-3">
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-5">Transactions</h2>
             </div>
             <div class="mt-5">
-              <div
-                v-for="(faker, fakerKey) in $_.take($f(), 5)"
-                :key="fakerKey"
-                class="intro-x"
-              >
+              <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey" class="intro-x">
                 <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                  <div
-                    class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden"
-                  >
-                    <img
-                      alt="Midone Tailwind HTML Admin Template"
-                      :src="faker.photos[0]"
-                    />
+                  <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                    <img alt="Midone Tailwind HTML Admin Template" :src="faker.photos[0]" />
                   </div>
                   <div class="ml-4 mr-auto">
                     <div class="font-medium">
@@ -854,10 +674,10 @@
                   <div
                     :class="{
                       'text-success': faker.trueFalse[0],
-                      'text-danger': !faker.trueFalse[0],
+                      'text-danger': !faker.trueFalse[0]
                     }"
                   >
-                    {{ faker.trueFalse[0] ? "+" : "-" }}${{ faker.totals[0] }}
+                    {{ faker.trueFalse[0] ? '+' : '-' }}${{ faker.totals[0] }}
                   </div>
                 </div>
               </div>
@@ -875,10 +695,7 @@
           >
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-5">Schedules</h2>
-              <a
-                href=""
-                class="ml-auto text-primary truncate flex items-center"
-              >
+              <a href="" class="ml-auto text-primary truncate flex items-center">
                 <PlusIcon class="w-4 h-4 mr-1" /> Add New Schedules
               </a>
             </div>
@@ -906,15 +723,9 @@
                     <div class="py-0.5 rounded relative">3</div>
                     <div class="py-0.5 rounded relative">4</div>
                     <div class="py-0.5 rounded relative">5</div>
-                    <div
-                      class="py-0.5 bg-success/20 dark:bg-success/30 rounded relative"
-                    >
-                      6
-                    </div>
+                    <div class="py-0.5 bg-success/20 dark:bg-success/30 rounded relative">6</div>
                     <div class="py-0.5 rounded relative">7</div>
-                    <div class="py-0.5 bg-primary text-white rounded relative">
-                      8
-                    </div>
+                    <div class="py-0.5 bg-primary text-white rounded relative">8</div>
                     <div class="py-0.5 rounded relative">9</div>
                     <div class="py-0.5 rounded relative">10</div>
                     <div class="py-0.5 rounded relative">11</div>
@@ -929,19 +740,11 @@
                     <div class="py-0.5 rounded relative">20</div>
                     <div class="py-0.5 rounded relative">21</div>
                     <div class="py-0.5 rounded relative">22</div>
-                    <div
-                      class="py-0.5 bg-pending/20 dark:bg-pending/30 rounded relative"
-                    >
-                      23
-                    </div>
+                    <div class="py-0.5 bg-pending/20 dark:bg-pending/30 rounded relative">23</div>
                     <div class="py-0.5 rounded relative">24</div>
                     <div class="py-0.5 rounded relative">25</div>
                     <div class="py-0.5 rounded relative">26</div>
-                    <div
-                      class="py-0.5 bg-primary/10 dark:bg-primary/50 rounded relative"
-                    >
-                      27
-                    </div>
+                    <div class="py-0.5 bg-primary/10 dark:bg-primary/50 rounded relative">27</div>
                     <div class="py-0.5 rounded relative">28</div>
                     <div class="py-0.5 rounded relative">29</div>
                     <div class="py-0.5 rounded relative">30</div>
@@ -984,23 +787,23 @@
 </template>
 
 <script setup>
-import { ref, provide, inject } from "vue";
-import ReportDonutChart from "@/components/report-donut-chart/Main.vue";
-import ReportBarChart from "@/components/report-bar-chart/Main.vue";
-import ReportMap from "@/components/report-map/Main.vue";
+import { ref, provide, inject } from 'vue'
+import ReportDonutChart from '@/components/report-donut-chart/Main.vue'
+import ReportBarChart from '@/components/report-bar-chart/Main.vue'
+import ReportMap from '@/components/report-map/Main.vue'
 
-const importantNotesRef = ref();
+const importantNotesRef = ref()
 
-provide("bind[importantNotesRef]", (el) => {
-  importantNotesRef.value = el;
-});
+provide('bind[importantNotesRef]', (el) => {
+  importantNotesRef.value = el
+})
 
 const prevImportantNotes = () => {
-  const el = importantNotesRef.value;
-  el.tns.goTo("prev");
-};
+  const el = importantNotesRef.value
+  el.tns.goTo('prev')
+}
 const nextImportantNotes = () => {
-  const el = importantNotesRef.value;
-  el.tns.goTo("next");
-};
+  const el = importantNotesRef.value
+  el.tns.goTo('next')
+}
 </script>
