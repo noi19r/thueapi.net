@@ -11,24 +11,16 @@
           <ul>
             <!-- BEGIN: First Child -->
             <template v-for="(menu, menuKey) in formattedMenu">
-              <li
-                v-if="menu == 'devider'"
-                :key="menu + menuKey"
-                class="side-nav__devider my-6"
-              ></li>
+              <li v-if="menu == 'devider'" :key="menu + menuKey" class="side-nav__devider my-6"></li>
               <li v-else :key="menu + menuKey">
                 <SideMenuTooltip
                   tag="a"
                   :content="menu.title"
-                  :href="
-                    menu.subMenu
-                      ? 'javascript:;'
-                      : router.resolve({ name: menu.pageName }).path
-                  "
+                  :href="menu.subMenu ? 'javascript:;' : router.resolve({ name: menu.pageName }).path"
                   class="side-menu"
                   :class="{
                     'side-menu--active': menu.active,
-                    'side-menu--open': menu.activeDropdown,
+                    'side-menu--open': menu.activeDropdown
                   }"
                   @click="linkTo(menu, router, $event)"
                 >
@@ -49,18 +41,11 @@
                 <!-- BEGIN: Second Child -->
                 <transition @enter="enter" @leave="leave">
                   <ul v-if="menu.subMenu && menu.activeDropdown">
-                    <li
-                      v-for="(subMenu, subMenuKey) in menu.subMenu"
-                      :key="subMenuKey"
-                    >
+                    <li v-for="(subMenu, subMenuKey) in menu.subMenu" :key="subMenuKey">
                       <SideMenuTooltip
                         tag="a"
                         :content="subMenu.title"
-                        :href="
-                          subMenu.subMenu
-                            ? 'javascript:;'
-                            : router.resolve({ name: subMenu.pageName }).path
-                        "
+                        :href="subMenu.subMenu ? 'javascript:;' : router.resolve({ name: subMenu.pageName }).path"
                         class="side-menu"
                         :class="{ 'side-menu--active': subMenu.active }"
                         @click="linkTo(subMenu, router, $event)"
@@ -74,7 +59,7 @@
                             v-if="subMenu.subMenu"
                             class="side-menu__sub-icon"
                             :class="{
-                              'transform rotate-180': subMenu.activeDropdown,
+                              'transform rotate-180': subMenu.activeDropdown
                             }"
                           >
                             <ChevronDownIcon />
@@ -84,12 +69,7 @@
                       <!-- BEGIN: Third Child -->
                       <transition @enter="enter" @leave="leave">
                         <ul v-if="subMenu.subMenu && subMenu.activeDropdown">
-                          <li
-                            v-for="(
-                              lastSubMenu, lastSubMenuKey
-                            ) in subMenu.subMenu"
-                            :key="lastSubMenuKey"
-                          >
+                          <li v-for="(lastSubMenu, lastSubMenuKey) in subMenu.subMenu" :key="lastSubMenuKey">
                             <SideMenuTooltip
                               tag="a"
                               :content="lastSubMenu.title"
@@ -97,12 +77,12 @@
                                 lastSubMenu.subMenu
                                   ? 'javascript:;'
                                   : router.resolve({
-                                      name: lastSubMenu.pageName,
+                                      name: lastSubMenu.pageName
                                     }).path
                               "
                               class="side-menu"
                               :class="{
-                                'side-menu--active': lastSubMenu.active,
+                                'side-menu--active': lastSubMenu.active
                               }"
                               @click="linkTo(lastSubMenu, router, $event)"
                             >
@@ -138,39 +118,39 @@
 </template>
 
 <script setup>
-import { computed, onMounted, provide, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { helper as $h } from "@/utils/helper";
-import { useSideMenuStore } from "@/stores/side-menu";
-import TopBar from "@/components/top-bar/Main.vue";
-import MobileMenu from "@/components/mobile-menu/Main.vue";
-import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
-import MainColorSwitcher from "@/components/main-color-switcher/Main.vue";
-import SideMenuTooltip from "@/components/side-menu-tooltip/Main.vue";
-import { linkTo, nestedMenu, enter, leave } from "./index";
-import dom from "@left4code/tw-starter/dist/js/dom";
+import { computed, onMounted, provide, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { helper as $h } from '@/utils/helper'
+import { useSideMenuStore } from '@/stores/side-menu'
+import TopBar from '@/components/top-bar/Main.vue'
+import MobileMenu from '@/components/mobile-menu/Main.vue'
+import DarkModeSwitcher from '@/components/dark-mode-switcher/Main.vue'
+import MainColorSwitcher from '@/components/main-color-switcher/Main.vue'
+import SideMenuTooltip from '@/components/side-menu-tooltip/Main.vue'
+import { linkTo, nestedMenu, enter, leave } from './index'
+import dom from '@left4code/tw-starter/dist/js/dom'
 
-const route = useRoute();
-const router = useRouter();
-const formattedMenu = ref([]);
-const sideMenuStore = useSideMenuStore();
-const sideMenu = computed(() => nestedMenu(sideMenuStore.menu, route));
+const route = useRoute()
+const router = useRouter()
+const formattedMenu = ref([])
+const sideMenuStore = useSideMenuStore()
+const sideMenu = computed(() => nestedMenu(sideMenuStore.menu, route))
 
-provide("forceActiveMenu", (pageName) => {
-  route.forceActiveMenu = pageName;
-  formattedMenu.value = $h.toRaw(sideMenu.value);
-});
+provide('forceActiveMenu', (pageName) => {
+  route.forceActiveMenu = pageName
+  formattedMenu.value = $h.toRaw(sideMenu.value)
+})
 
 watch(
   computed(() => route.path),
   () => {
-    delete route.forceActiveMenu;
-    formattedMenu.value = $h.toRaw(sideMenu.value);
+    delete route.forceActiveMenu
+    formattedMenu.value = $h.toRaw(sideMenu.value)
   }
-);
+)
 
 onMounted(() => {
-  dom("body").removeClass("error-page").removeClass("login").addClass("main");
-  formattedMenu.value = $h.toRaw(sideMenu.value);
-});
+  dom('body').removeClass('error-page').removeClass('login').addClass('main')
+  formattedMenu.value = $h.toRaw(sideMenu.value)
+})
 </script>
