@@ -81,7 +81,7 @@
               </div>
             </DropdownHeader>
             <DropdownDivider class="border-white/[0.08]" />
-            <router-link to="/profile">
+            <router-link to="/profile" @click.prevent="hideDropdrop">
               <DropdownItem class="dropdown-item hover:bg-white/5">
                 <UserIcon class="w-4 h-4 mr-2" /> Thông tin</DropdownItem
               >
@@ -117,8 +117,12 @@ const hideSearchDropdown = () => {
   searchDropdown.value = false
 }
 
-const logoutWeb = async () => {
+const hideDropdrop = () => {
   tailwind.Dropdown.getOrCreateInstance(document.querySelector('#main-dropdown')).hide()
+}
+
+const logoutWeb = async () => {
+  hideDropdrop()
 
   await logout()
   userStore.clearUser()
