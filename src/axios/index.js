@@ -30,6 +30,7 @@ function requestService(config) {
         toast.danger(res.data.message)
         return Promise.reject(res.data.message)
       }
+
       return res.data.data
     },
     (error) => {

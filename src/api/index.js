@@ -1,6 +1,7 @@
 export * from './auth'
 export * from './bank'
 export * from './deck'
+export * from './price'
 export * from './notification'
 export * from './recharge'
 export * from './user'
