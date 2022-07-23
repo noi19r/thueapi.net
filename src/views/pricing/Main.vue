@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(faker, fakerKey) in $_.take($f(), 7)" :key="fakerKey" class="intro-x">
+          <tr v-for="(price, priceKey) in priceListData" :key="priceKey" class="intro-x">
             <td class="!py-2">
               <div class="flex items-center">
                 <div class="w-10 h-10 image-fit zoom-in">
@@ -22,34 +22,34 @@
                     tag="img"
                     alt="Midone - HTML Admin Template"
                     class="rounded-lg border-1 border-white shadow-md tooltip"
-                    :src="faker.images[0]"
+                    :src="`http://localhost:8080/src/assets/images/preview-10.jpg`"
                     :content="`Tài Khoản Cá Nhân`"
                   />
                 </div>
 
-                <a href="" class="font-medium whitespace-nowrap ml-4">{{ faker.products[0].name }}</a>
+                <a class="font-medium whitespace-nowrap ml-4">{{ price.name }}</a>
               </div>
             </td>
 
             <td>
-              <div class="text-slate-500 flex items-center mr-3">{{ faker.totals[0] }},000 vnđ</div>
+              <div class="text-slate-500 flex items-center mr-3">{{ $h.formatCurrency(price.amount) }} vnđ</div>
             </td>
             <td class="w-20 whitespace-nowrap">
               <div
                 class="flex items-center justify-center"
                 :class="{
-                  'text-success': faker.trueFalse[0],
-                  'text-danger': !faker.trueFalse[0]
+                  'text-success': price.status,
+                  'text-danger': !price.status
                 }"
               >
-                <CheckCircleIcon v-if="faker.trueFalse[0]" class="w-4 h-4 mr-2" />
+                <CheckCircleIcon v-if="price.status" class="w-4 h-4 mr-2" />
                 <AlertCircleIcon v-else class="w-4 h-4 mr-2" />
-                {{ faker.trueFalse[0] ? 'Hoạt động' : 'Bảo Trì' }}
+                {{ price.status ? 'Hoạt động' : 'Bảo Trì' }}
               </div>
             </td>
             <td class="table-report__action w-56">
               <div class="flex justify-center items-center">
-                <button class="flex items-center text-primary" @click="deleteConfirmationModal = true">
+                <button class="flex items-center text-primary" @click="dataModel(price.type, price.amount, price.name)">
                   <CreditCardIcon class="w-4 h-4 mr-1" /> Nâng Cấp
                 </button>
               </div>
@@ -60,29 +60,85 @@
     </div>
     <!-- END: Data List -->
   </div>
-  <!-- BEGIN: Delete Confirmation Modal -->
-  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
-    <ModalBody class="p-0">
-      <div class="p-5 text-center">
-        <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
-        <div class="text-3xl mt-5">Are you sure?</div>
-        <div class="text-slate-500 mt-2">
-          Do you really want to delete these records? <br />This process cannot be undone.
-        </div>
+  <!-- BEGIN: Modal Content -->
+  <Modal :show="modelUpgradeDeck" @hidden="modelUpgradeDeck = false">
+    <ModalHeader>
+      <h2 class="font-medium text-base mr-auto">Nâng cấp sử dụng</h2>
+    </ModalHeader>
+    <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
+      <div class="col-span-12 text-center">
+        <!-- <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" /> -->
+        <div class="text-3xl mt-2 text-primary">{{ dateUpgrade.name }}</div>
       </div>
-      <div class="px-5 pb-8 text-center">
-        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
-          Cancel
-        </button>
-        <button type="button" class="btn btn-danger w-24">Delete</button>
+
+      <div class="col-span-12 sm:col-span-6">
+        <label for="modal-form-6" class="form-label">Thời hạn</label>
+        <select v-model="dateUpgrade.period" class="form-select">
+          <option value="1">1 tháng</option>
+          <option value="2">2 tháng</option>
+          <option value="3">3 tháng</option>
+          <option value="6">6 tháng</option>
+        </select>
+      </div>
+      <div class="col-span-12 sm:col-span-6">
+        <label for="modal-form-5" class="form-label">Thành tiền</label>
+        <input
+          type="text"
+          class="form-control"
+          :value="`${$h.formatCurrency(dateUpgrade.price * dateUpgrade.period)} vnđ`"
+          disabled
+        />
       </div>
     </ModalBody>
+    <ModalFooter>
+      <button type="button" @click="modelUpgradeDeck = false" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
+      <button type="button" class="btn btn-primary w-25" @click.prevent="submitUpgrade">Nâng cấp</button>
+    </ModalFooter>
   </Modal>
-  <!-- END: Delete Confirmation Modal -->
+  <!-- END: Modal Content -->
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
+import { ref, onMounted, reactive, toRaw } from 'vue'
+import { priceList, deckUpgrade } from '@/api'
+import { helper as $h } from '@/utils/helper'
+import { toast } from '../../plugins/toast'
+import { useUserStore } from '@/stores/user'
 const deleteConfirmationModal = ref(false)
+const modelUpgradeDeck = ref(false)
+const priceListData = ref([])
+const userStore = useUserStore()
+
+const getPriceList = async () => {
+  let result = await priceList()
+  priceListData.value = result.list
+}
+
+const dataModel = (type, price, name) => {
+  dateUpgrade.period = 1
+  dateUpgrade.type = type
+  dateUpgrade.price = price
+  dateUpgrade.name = name
+  modelUpgradeDeck.value = true
+}
+const submitUpgrade = async () => {
+  modelUpgradeDeck.value = false
+  let data = toRaw(dateUpgrade)
+  await deckUpgrade({
+    period: data.period,
+    type: data.type
+  })
+  toast.success('Nâng cấp gói thành công.')
+  userStore.setUserInfo()
+}
+const dateUpgrade = reactive({
+  period: 1,
+  type: '',
+  price: 1000,
+  name: ''
+})
+onMounted(() => {
+  userStore.setUserInfo()
+  getPriceList()
+})
 </script>
