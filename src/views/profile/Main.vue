@@ -252,102 +252,52 @@
         </div>
       </div>
       <!-- END: Change Password -->
-      <!-- BEGIN: Personal Information -->
+      <!-- BEGIN: GATEWAY -->
       <div class="intro-y box lg:mt-5" v-else-if="activeTab == 'gatepay'">
         <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-          <h2 class="font-medium text-base mr-auto">Personal Information</h2>
+          <h2 class="font-medium text-base mr-auto">Các cổng thanh toán đang sử dụng</h2>
         </div>
-        <div class="p-5">
-          <div class="grid grid-cols-12 gap-x-5">
-            <div class="col-span-12 xl:col-span-6">
-              <div>
-                <label for="update-profile-form-6" class="form-label">Email</label>
-                <input
-                  id="update-profile-form-6"
-                  type="text"
-                  class="form-control"
-                  placeholder="Input text"
-                  :value="$f()[0].users[0].email"
-                  disabled
-                />
-              </div>
-              <div class="mt-3">
-                <label for="update-profile-form-7" class="form-label">Name</label>
-                <input
-                  id="update-profile-form-7"
-                  type="text"
-                  class="form-control"
-                  placeholder="Input text"
-                  :value="$f()[0].users[0].name"
-                  disabled
-                />
-              </div>
-              <div class="mt-3">
-                <label for="update-profile-form-8" class="form-label">ID Type</label>
-                <select id="update-profile-form-8" class="form-select">
-                  <option>IC</option>
-                  <option>FIN</option>
-                  <option>Passport</option>
-                </select>
-              </div>
-              <div class="mt-3">
-                <label for="update-profile-form-9" class="form-label">ID Number</label>
-                <input
-                  id="update-profile-form-9"
-                  type="text"
-                  class="form-control"
-                  placeholder="Input text"
-                  value="357821204950001"
-                />
-              </div>
-            </div>
-            <div class="col-span-12 xl:col-span-6">
-              <div class="mt-3 xl:mt-0">
-                <label for="update-profile-form-10" class="form-label">Phone Number</label>
-                <input
-                  id="update-profile-form-10"
-                  type="text"
-                  class="form-control"
-                  placeholder="Input text"
-                  value="65570828"
-                />
-              </div>
-              <div class="mt-3">
-                <label for="update-profile-form-11" class="form-label">Address</label>
-                <input
-                  id="update-profile-form-11"
-                  type="text"
-                  class="form-control"
-                  placeholder="Input text"
-                  value="10 Anson Road, International Plaza, #10-11, 079903 Singapore, Singapore"
-                />
-              </div>
-              <div class="mt-3">
-                <label for="update-profile-form-12" class="form-label">Bank Name</label>
-                <TomSelect id="update-profile-form-12" v-model="select" class="w-full">
-                  <option value="1">SBI - STATE BANK OF INDIA</option>
-                  <option value="2">CITI BANK - CITI BANK</option>
-                </TomSelect>
-              </div>
-              <div class="mt-3">
-                <label for="update-profile-form-13" class="form-label">Bank Account</label>
-                <input
-                  id="update-profile-form-13"
-                  type="text"
-                  class="form-control"
-                  placeholder="Input text"
-                  value="DBS Current 011-903573-0"
-                />
-              </div>
-            </div>
+        <div class="intro-y overflow-auto lg:overflow-visible sm:mt-0">
+          <div v-if="!deckData.length" class="p-5 text-center font-medium">
+            <span>Không có gì để hiển thị</span>
           </div>
-          <div class="flex justify-end mt-4">
-            <button type="button" class="btn btn-primary w-20 mr-auto">Save</button>
-            <a href="" class="text-danger flex items-center"> <Trash2Icon class="w-4 h-4 mr-1" /> Delete Account </a>
-          </div>
+          <table v-else class="table table-report sm:mt-2">
+            <thead>
+              <tr>
+                <th class="whitespace-nowrap">Cổng Thanh Toán</th>
+
+                <th class="whitespace-nowrap">Ngày Hết Hạn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(deck, deckKey) in deckData" :key="deckKey" class="intro-x">
+                <td class="!py-2">
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 image-fit zoom-in">
+                      <Tippy
+                        tag="img"
+                        alt="Midone - HTML Admin Template"
+                        class="rounded-lg border-1 border-white shadow-md tooltip"
+                        :src="`http://localhost:8080/src/assets/images/preview-10.jpg`"
+                        :content="`Tài Khoản Cá Nhân`"
+                      />
+                    </div>
+
+                    <a class="font-medium whitespace-nowrap ml-4">{{ deck.type }}</a>
+                  </div>
+                </td>
+
+                <td class="whitespace-nowrap">
+                  <div class="flex items-center mr-3 font-medium">
+                    {{ $h.formatDate(deck.expired, 'DD/MM/YYYY HH:mm') }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <!-- END: Personal Information -->
+      <!-- END: GATEWAY -->
       <!-- BEGIN: 2FA -->
       <div class="intro-y box lg:mt-5" v-else-if="activeTab == 'setting'">
         <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -409,7 +359,7 @@ import { useVuelidate } from '@vuelidate/core'
 
 import { useUserStore } from '@/stores/user'
 import { helper as $h } from '@/utils/helper'
-import { qr2FA, changePassword, verify2FA, updateTelegram } from '@/api'
+import { qr2FA, changePassword, verify2FA, updateTelegram, deckList } from '@/api'
 import { toast } from '../../plugins/toast'
 
 const userStore = useUserStore()
@@ -419,10 +369,15 @@ const select = ref('1')
 const activeTab = ref('info')
 const qrcode = ref('')
 const deleteConfirmationModal = ref(false)
-
+const deckData = ref([])
 const formTelegramData = reactive({
   username: userStore.userInfoMe.telegram.username
 })
+
+const getDeckList = async () => {
+  let data = await deckList()
+  deckData.value = data.list
+}
 
 const formChangePasswordData = reactive({
   currentPassword: '',
@@ -513,6 +468,7 @@ const saveTelegram = async () => {
 
 onMounted(async () => {
   userStore.setUserInfo()
+  getDeckList()
   if (!userStore.userInfoMe.is2FA) {
     let qrImage = await qr2FA()
     qrcode.value = qrImage.image

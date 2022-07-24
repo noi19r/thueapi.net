@@ -32,7 +32,7 @@
             </td>
 
             <td>
-              <div class="text-slate-500 flex items-center mr-3">{{ $h.formatCurrency(price.amount) }} vnđ</div>
+              <div class="font-medium flex items-center mr-3">{{ $h.formatCurrency(price.amount) }} vnđ</div>
             </td>
             <td class="w-20 whitespace-nowrap">
               <div

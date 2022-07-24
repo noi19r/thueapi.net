@@ -3,12 +3,12 @@
     <div class="col-span-12 2xl:col-span-9">
       <div class="grid grid-cols-12 gap-6">
         <!-- BEGIN: Notification -->
-        <div class="col-span-12 mt-6 -mb-6 intro-y">
+        <div class="col-span-12 mt-6 -mb-6 intro-y" v-if="userInfo.amount < 10000">
           <Alert class="box bg-primary text-white flex items-center mb-6" v-slot="{ dismiss }">
             <span
               >Số dư của bạn đang ở mức thấp, bạn cần nạp thêm để tránh gián đoạn dịch vụ.
-              <a href="" class="underline ml-1" target="blank">themeforest.net</a>.</span
-            >
+              <!-- <a href="https://sow.dev" class="underline ml-1" target="blank">@sow.dev</a>. -->
+            </span>
             <button type="button" class="btn-close text-white" @click="dismiss" aria-label="Close">
               <XIcon class="w-4 h-4" />
             </button>
@@ -65,73 +65,63 @@
             <table class="table table-report sm:mt-2">
               <thead>
                 <tr>
-                  <th class="whitespace-nowrap">IMAGES</th>
-                  <th class="whitespace-nowrap">PRODUCT NAME</th>
-                  <th class="text-center whitespace-nowrap">STOCK</th>
-                  <th class="text-center whitespace-nowrap">STATUS</th>
-                  <th class="text-center whitespace-nowrap">ACTIONS</th>
+                  <th class="whitespace-nowrap">Mã Giao Dịch</th>
+                  <th class="whitespace-nowrap">Thông Tin</th>
+                  <th class="text-center whitespace-nowrap">Biến Động</th>
+                  <th class="text-center whitespace-nowrap">Nội Dung</th>
+                  <th class="text-center whitespace-nowrap">Thời Gian</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(faker, fakerKey) in $_.take($f(), 10)" :key="fakerKey" class="intro-x">
-                  <td class="w-40">
-                    <div class="flex">
-                      <div class="w-10 h-10 image-fit zoom-in">
-                        <Tippy
-                          tag="img"
-                          alt="Midone Tailwind HTML Admin Template"
-                          class="rounded-full"
-                          :src="faker.images[0]"
-                          :content="`Uploaded at ${faker.dates[0]}`"
-                        />
-                      </div>
-                      <div class="w-10 h-10 image-fit zoom-in -ml-5">
-                        <Tippy
-                          tag="img"
-                          alt="Midone Tailwind HTML Admin Template"
-                          class="rounded-full"
-                          :src="faker.images[1]"
-                          :content="`Uploaded at ${faker.dates[1]}`"
-                        />
-                      </div>
-                      <div class="w-10 h-10 image-fit zoom-in -ml-5">
-                        <Tippy
-                          tag="img"
-                          alt="Midone Tailwind HTML Admin Template"
-                          class="rounded-full"
-                          :src="faker.images[2]"
-                          :content="`Uploaded at ${faker.dates[2]}`"
-                        />
-                      </div>
+                <tr v-if="!isLastTransaction.length">
+                  <td valign="top" colspan="5" class="text-center font-medium">Không có gì để hiển thị</td>
+                </tr>
+                <tr
+                  v-else
+                  v-for="(transaction, transactionKey) in isLastTransaction"
+                  :key="transactionKey"
+                  class="intro-x"
+                >
+                  <td>
+                    <a class="font-medium whitespace-nowrap">{{ transaction.bank }}</a>
+                    <div class="text-primary text-2xs whitespace-nowrap mt-0.5">
+                      {{ transaction.transId }}
                     </div>
                   </td>
                   <td>
-                    <a href="" class="font-medium whitespace-nowrap">{{ faker.products[0].name }}</a>
+                    <a class="font-medium whitespace-nowrap">{{
+                      transaction.bank == 'zalopay'
+                        ? transaction.info[1]
+                          ? transaction.info[1].value
+                          : transaction.info[0].name
+                        : transaction.partnerId
+                    }}</a>
                     <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">
-                      {{ faker.products[0].category }}
+                      {{ transaction.bank == 'zalopay' ? transaction.info[0].value : transaction.partnerName }}
                     </div>
                   </td>
-                  <td class="text-center">{{ faker.stocks[0] }}</td>
-                  <td class="w-40">
-                    <div
-                      class="flex items-center justify-center"
+
+                  <td class="text-center">
+                    <a
+                      class="font-medium font-medium"
                       :class="{
-                        'text-success': faker.trueFalse[0],
-                        'text-danger': !faker.trueFalse[0]
+                        'text-success': transaction.io == 1,
+                        'text-danger': transaction.io == -1
                       }"
+                      >{{ $h.formatCurrency(transaction.amount * transaction.io) }}</a
                     >
-                      <CheckSquareIcon class="w-4 h-4 mr-2" />
-                      {{ faker.trueFalse[0] ? 'Active' : 'Inactive' }}
+
+                    <div class="text-primary text-2xs whitespace-nowrap mt-0.5">
+                      {{ $h.formatCurrency(transaction.postBalance) }} vnđ
                     </div>
                   </td>
-                  <td class="table-report__action w-56">
-                    <div class="flex justify-center items-center">
-                      <a class="flex items-center mr-3" href="">
-                        <CheckSquareIcon class="w-4 h-4 mr-1" />
-                        Edit
-                      </a>
-                      <a class="flex items-center text-danger" href=""> <Trash2Icon class="w-4 h-4 mr-1" /> Delete </a>
+                  <td class="w-40">
+                    <div class="flex items-center justify-center">
+                      {{ transaction.comment }}
                     </div>
+                  </td>
+                  <td class="text-center font-medium whitespace-nowrap">
+                    {{ $h.formatDate(transaction.time, 'DD/MM/YYYY HH:mm') }}
                   </td>
                 </tr>
               </tbody>
@@ -213,43 +203,22 @@
               </button>
             </div>
             <div class="mt-5 intro-x">
-              <div class="box zoom-in">
+              <div class="box zoom-in" v-if="listImportantNote.length">
                 <TinySlider ref-key="importantNotesRef">
-                  <div class="p-5">
-                    <div class="text-base font-medium truncate">Lorem Ipsum is simply dummy text</div>
-                    <div class="text-slate-400 mt-1">20 Hours ago</div>
+                  <div class="p-5" v-for="(item, itemKey) in listImportantNote" :key="itemKey">
+                    <div class="text-base font-medium truncate">{{ item.title }}</div>
+                    <!-- <div class="text-slate-400 mt-1">{{ $h.timeAgo(item.createdAt) }}</div> -->
                     <div class="text-slate-500 text-justify mt-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                      the industry's standard dummy text ever since the 1500s.
+                      {{ item.content }}
                     </div>
-                    <!-- <div class="font-medium flex mt-5">
-                      <button type="button" class="btn btn-secondary py-1 px-2">View Notes</button>
-                      <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto">Dismiss</button>
-                    </div> -->
-                  </div>
-                  <div class="p-5">
-                    <div class="text-base font-medium truncate">Lorem Ipsum is simply dummy text</div>
-                    <div class="text-slate-400 mt-1">20 Hours ago</div>
-                    <div class="text-slate-500 text-justify mt-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                      the industry's standard dummy text ever since the 1500s.
+                    <div class="font-medium flex mt-5">
+                      <div class="btn btn-secondary py-1 px-2 h-5">
+                        {{ $h.formatDate(item.createdAt, 'DD/MM/YYYY HH:mm') }}
+                      </div>
+                      <div class="btn btn-secondary py-1 px-2 h-5 ml-auto ml-auto">
+                        {{ $h.timeAgoVi(item.createdAt) }}
+                      </div>
                     </div>
-                    <!-- <div class="font-medium flex mt-5">
-                      <button type="button" class="btn btn-secondary py-1 px-2">View Notes</button>
-                      <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto">Dismiss</button>
-                    </div> -->
-                  </div>
-                  <div class="p-5">
-                    <div class="text-base font-medium truncate">Lorem Ipsum is simply dummy text</div>
-                    <div class="text-slate-400 mt-1">20 Hours ago</div>
-                    <div class="text-slate-500 text-justify mt-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                      the industry's standard dummy text ever since the 1500s.
-                    </div>
-                    <!-- <div class="font-medium flex mt-5">
-                      <button type="button" class="btn btn-secondary py-1 px-2">View Notes</button>
-                      <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto ml-auto">Dismiss</button>
-                    </div> -->
                   </div>
                 </TinySlider>
               </div>
@@ -262,7 +231,7 @@
               <h2 class="text-lg font-medium truncate mr-5">Lịch Sử Đăng Nhập</h2>
             </div>
             <div class="mt-5">
-              <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey" class="intro-x">
+              <div v-for="(faker, fakerKey) in $_.take($f(), 0)" :key="fakerKey" class="intro-x">
                 <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                   <!-- <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
                     <img alt="Midone Tailwind HTML Admin Template" :src="faker.photos[0]" />
@@ -300,10 +269,25 @@
 </template>
 
 <script setup>
-import { ref, provide, inject } from 'vue'
-
+import { ref, provide, inject, onMounted, computed } from 'vue'
+import { lastTransaction, importantNote } from '@/api'
+import { useUserStore } from '@/stores/user'
+import { helper as $h } from '@/utils/helper'
+const userStore = useUserStore()
+const userInfo = computed(() => userStore.userInfoMe)
 const importantNotesRef = ref()
+const listImportantNote = ref([])
+const isLastTransaction = ref([])
 
+const getLastTransaction = async () => {
+  let data = await lastTransaction()
+
+  isLastTransaction.value = data
+}
+const getImportantNotes = async () => {
+  let data = await importantNote()
+  listImportantNote.value = data
+}
 provide('bind[importantNotesRef]', (el) => {
   importantNotesRef.value = el
 })
@@ -316,4 +300,10 @@ const nextImportantNotes = () => {
   const el = importantNotesRef.value
   el.tns.goTo('next')
 }
+
+onMounted(async () => {
+  userStore.setUserInfo()
+  getLastTransaction()
+  getImportantNotes()
+})
 </script>

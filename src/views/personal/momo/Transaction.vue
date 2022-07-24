@@ -119,7 +119,17 @@ const salesReportFilter = ref()
 const imageAssets = import.meta.globEager(`/src/assets/images/*.{jpg,jpeg,png,svg}`)
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
-    ajaxURL: 'https://dummy-data.left4code.com',
+    ajaxURL: '/api/bank/momo/transaction',
+
+    ajaxRequesting: (url, params, data) => {},
+    ajaxConfig: {
+      data: {
+        _id: '62c8317c915ff02f251907b2'
+      },
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    },
     ajaxFiltering: true,
     ajaxSorting: true,
     printAsHtml: true,
