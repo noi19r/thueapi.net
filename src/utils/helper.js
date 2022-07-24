@@ -1,8 +1,27 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-
+import relativeTime from 'dayjs/plugin/relativeTime'
+import updateLocale from 'dayjs/plugin/updateLocale'
+dayjs.extend(updateLocale)
+dayjs.extend(relativeTime)
 dayjs.extend(duration)
-
+dayjs.updateLocale('en', {
+  relativeTime: {
+    future: 'trong %s',
+    past: '%s trước',
+    s: 'vài giây',
+    m: 'một phút',
+    mm: '%d phút',
+    h: 'một giờ',
+    hh: '%d giờ',
+    d: 'một ngày',
+    dd: '%d ngày',
+    M: 'một tháng',
+    MM: '%d tháng',
+    y: 'a năm',
+    yy: '%d năm'
+  }
+})
 const helpers = {
   cutText(text, length) {
     if (text.split(' ').length > 1) {
@@ -33,6 +52,9 @@ const helpers = {
   },
   formatCurrency(number) {
     if (number) {
+      let soAm = ''
+      if (number < 0) soAm = '-'
+
       const formattedNumber = number.toString().replace(/\D/g, '')
       const rest = formattedNumber.length % 3
       let currency = formattedNumber.substr(0, rest)
@@ -44,10 +66,13 @@ const helpers = {
         currency += separator + thousand.join(',')
       }
 
-      return currency
+      return soAm.concat(currency)
     } else {
       return number
     }
+  },
+  timeAgoVi(time) {
+    return dayjs(time).fromNow()
   },
   timeAgo(time) {
     const date = new Date((time || '').replace(/-/g, '/').replace(/[TZ]/g, ' '))
