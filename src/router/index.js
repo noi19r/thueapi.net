@@ -111,12 +111,12 @@ const routes = [
 
           {
             path: 'momo/transaction/:id',
-
+            name: 'side-menu-personal-momo-history',
             component: MomoTransaction
           },
           {
             path: 'momo/statistic/:id',
-
+            name: 'side-menu-personal-momo-statistic',
             component: MomoStatistic
           },
           {
@@ -126,7 +126,7 @@ const routes = [
           },
           {
             path: 'zalopay/transaction/:id',
-
+            name: 'side-menu-personal-zalopay-history',
             component: ZaloPayTransaction
           },
           {
