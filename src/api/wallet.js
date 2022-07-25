@@ -8,4 +8,4 @@ const checkNameTranfer = (params, data) => api({ url: `/wallet/${params}/checkTr
 
 const tranferWallet = (params, data) => api({ url: `/wallet/${params}/tranfer`, data, method: 'post' })
 
-export { getOTP, confirmOTP, tranferWallet }
+export { getOTP, confirmOTP, tranferWallet, checkNameTranfer }

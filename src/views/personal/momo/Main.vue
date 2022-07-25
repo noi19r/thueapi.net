@@ -4,14 +4,102 @@
     <div class="intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2">
       <div class="flex w-full sm:w-auto">
         <div class="w-48 relative text-slate-500">
-          <input type="text" class="form-control w-48 box pr-10" placeholder="Search by invoice..." />
+          <input type="text" class="form-control w-48 box pr-10" placeholder="Search..." />
           <SearchIcon class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" />
         </div>
       </div>
-      <div class="hidden xl:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div>
-      <div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+      <!-- <div class="hidden xl:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div> -->
+      <div class="hidden xl:block mx-auto text-slate-500"></div>
+      <div @click.prevent="headerFooterModalPreview = true" class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
         <button class="btn btn-primary shadow-md mr-2"><PlusIcon class="w-4 h-4 mr-2" />Thêm Tài Khoản</button>
       </div>
+      <!-- BEGIN: Modal Content -->
+      <Modal :show="headerFooterModalPreview" @hidden="headerFooterModalPreview = false">
+        <ModalHeader>
+          <h2 class="font-medium text-base mr-auto">Thêm Tài Khoản</h2>
+        </ModalHeader>
+        <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
+          <div class="col-span-12">
+            <label for="modal-form-1" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" v-model="formWallet.phone" :disabled="Boolean(formWallet._id)" />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formWallet._id">
+            <label for="modal-form-1" class="form-label">Mật khẩu</label>
+            <input type="text" class="form-control" v-model="formWallet.password" />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formWallet._id">
+            <label for="modal-form-1" class="form-label">OTP</label>
+            <input type="text" class="form-control" v-model="formWallet.otp" />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button type="button" @click.prevent="cancelModel" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
+          <button v-if="!formWallet._id" type="button" @click.prevent="getOTPWallet" class="btn btn-primary w-20">
+            Lấy OTP
+          </button>
+          <button v-else type="button" @click.prevent="confirmOTPWallet" class="btn btn-primary w-30">Xác nhận</button>
+        </ModalFooter>
+      </Modal>
+      <!-- END: Modal Content -->
+      <!-- BEGIN: Modal Transfer -->
+      <Modal :show="headerFooterModalTransfer" @hidden="headerFooterModalTransfer = false">
+        <ModalHeader>
+          <h2 class="font-medium text-base mr-auto">Thêm Tài Khoản</h2>
+        </ModalHeader>
+        <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
+          <div
+            class="col-span-12"
+            :class="{
+              'sm:col-span-6': formTransferWallet.NAME
+            }"
+          >
+            <label for="modal-form-1" class="form-label">Số điện thoại người nhận</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="formTransferWallet.numberPhone"
+              :disabled="Boolean(formTransferWallet.NAME)"
+            />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formTransferWallet.NAME">
+            <label for="modal-form-1" class="form-label">Tên người nhận:</label>
+            <input type="text" class="form-control" v-model="formTransferWallet.NAME" disabled />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formTransferWallet.NAME">
+            <label for="modal-form-1" class="form-label">Số tiền</label>
+            <input type="number" class="form-control" min="100" max="20000000" v-model="formTransferWallet.amount" />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formTransferWallet.NAME">
+            <label for="modal-form-1" class="form-label">Nội dung</label>
+            <input type="text" class="form-control" v-model="formTransferWallet.comment" />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formTransferWallet.NAME">
+            <label for="modal-form-1" class="form-label">Mật khẩu</label>
+            <input type="text" class="form-control" v-model="formTransferWallet.password" />
+          </div>
+          <div class="col-span-12 sm:col-span-6" v-if="formTransferWallet.NAME && userStore.userInfoMe.is2FA">
+            <label for="modal-form-1" class="form-label">OTP</label>
+            <input type="text" class="form-control" v-model="formTransferWallet.otp" />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button type="button" @click.prevent="cancelModelTransfer" class="btn btn-outline-secondary w-20 mr-1">
+            Huỷ
+          </button>
+          <button
+            v-if="!formTransferWallet.NAME"
+            type="button"
+            @click.prevent="checkNameTransferWallet"
+            class="btn btn-primary w-30"
+          >
+            Kiểm Tra
+          </button>
+          <button v-else type="button" @click.prevent="confirmTransferWallet" class="btn btn-primary w-30">
+            Chuyển tiền
+          </button>
+        </ModalFooter>
+      </Modal>
+      <!-- END: Modal Transfer -->
     </div>
     <!-- BEGIN: Data List -->
     <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
@@ -57,17 +145,24 @@
             </td>
             <td class="table-report__action">
               <div class="flex justify-center items-center">
-                <router-link to="/personal/momo/statistic/123918293"
+                <!-- <router-link v-if="item.status == 1" to="/personal/momo/statistic/123918293"
                   ><a class="flex items-center text-primary whitespace-nowrap mr-5" href="javascript:;">
                     <BarChart2Icon class="w-4 h-4 mr-1" /> Thống Kê
                   </a>
-                </router-link>
-                <router-link :to="{ name: 'side-menu-personal-momo-history', params: { id: item._id } }"
+                </router-link> -->
+                <router-link
+                  v-if="item.status == 1"
+                  :to="{ name: 'side-menu-personal-momo-history', params: { id: item._id } }"
                   ><a class="flex items-center text-primary whitespace-nowrap mr-5" href="javascript:;">
                     <ListIcon class="w-4 h-4 mr-1" /> Lịch Sử
                   </a>
                 </router-link>
-                <a class="flex items-center text-primary whitespace-nowrap mr-5" href="javascript:;">
+                <a
+                  v-if="item.status == 1"
+                  class="flex items-center text-primary whitespace-nowrap mr-5"
+                  href="javascript:;"
+                  @click.prevent="showModelTransfer(item._id)"
+                >
                   <DollarSignIcon class="w-4 h-4 mr-1" /> Chuyển Tiền
                 </a>
                 <a
@@ -128,9 +223,38 @@
 <script setup>
 import { helper as $h } from '@/utils/helper'
 import { ref, onMounted } from 'vue'
-import { bankAccount, deleteBankAccount, updateBankAccount } from '@/api'
+import {
+  bankAccount,
+  deleteBankAccount,
+  updateBankAccount,
+  getOTP,
+  confirmOTP,
+  checkNameTranfer,
+  tranferWallet
+} from '@/api'
 import { toast } from '../../../plugins/toast'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+const headerFooterModalTransfer = ref(false)
 const deleteConfirmationModal = ref(false)
+const headerFooterModalPreview = ref(false)
+const formWallet = ref({
+  phone: '',
+  password: '',
+  otp: '',
+  _id: ''
+})
+
+const formTransferWallet = ref({
+  numberPhone: '',
+  amount: 100,
+  comment: '',
+  otp: '',
+  password: '',
+  NAME: '',
+  _id: ''
+})
+
 const isData = ref([])
 const isModel = ref('')
 
@@ -141,6 +265,12 @@ const isLogError = ref({
   3: ' Vui lòng đăng nhập lại',
   99: 'Trạng thái chờ OTP'
 })
+
+const showModelTransfer = (id) => {
+  formTransferWallet.value._id = id
+  headerFooterModalTransfer.value = true
+}
+
 const showModelDelete = async (bankId) => {
   isModel.value = bankId
   deleteConfirmationModal.value = true
@@ -148,10 +278,10 @@ const showModelDelete = async (bankId) => {
 
 const confirmDelete = async () => {
   deleteConfirmationModal.value = false
-  console.log(isModel.value)
-  // await deleteBankAccount(isModel.value)
+
+  await deleteBankAccount(isModel.value)
   toast.success('Xoá tài khoản thành công.')
-  getDataMomo()
+  getDataAccount()
 }
 
 const updateStatus = async (bankId, status) => {
@@ -162,14 +292,70 @@ const updateStatus = async (bankId, status) => {
   }
   await updateBankAccount(bankId, { status: isStatus })
   toast.success('Thay đổi trạng thái thành công.')
-  getDataMomo()
+  getDataAccount()
 }
 
-const getDataMomo = async () => {
+const cancelModel = () => {
+  formWallet.value = {
+    phone: '',
+    password: '',
+    otp: '',
+    _id: ''
+  }
+  headerFooterModalPreview.value = false
+}
+const cancelModelTransfer = () => {
+  formTransferWallet.value = {
+    numberPhone: '',
+    amount: 100,
+    comment: '',
+    otp: '',
+    password: '',
+    NAME: '',
+    _id: ''
+  }
+  headerFooterModalTransfer.value = false
+}
+const getDataAccount = async () => {
   let data = await bankAccount('momo')
   isData.value = data.list
 }
+const getOTPWallet = async () => {
+  let data = await getOTP('momo', {
+    phone: formWallet.value.phone
+  })
+  formWallet.value._id = data._id
+  toast.success('Gửi mã xác nhận thành công.')
+  getDataAccount()
+}
+
+const confirmOTPWallet = async () => {
+  await confirmOTP('momo', formWallet.value)
+  cancelModel()
+  toast.success('Thêm tài khoản thành công.')
+  getDataAccount()
+}
+
+const checkNameTransferWallet = async () => {
+  let data = await checkNameTranfer('momo', {
+    _id: formTransferWallet.value._id,
+    numberPhone: formTransferWallet.value.numberPhone
+  })
+  formTransferWallet.value.NAME = data.NAME
+}
+
+const confirmTransferWallet = async () => {
+  let data = {
+    ...formTransferWallet.value
+  }
+  if (!userStore.userInfoMe.is2FA) delete data.otp
+
+  await tranferWallet('momo', data)
+  cancelModelTransfer()
+  toast.success('Chuyển tiền thành công.')
+}
+
 onMounted(() => {
-  getDataMomo()
+  getDataAccount()
 })
 </script>

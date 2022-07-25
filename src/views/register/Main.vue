@@ -211,7 +211,7 @@ const save = async () => {
     })
 
     toast.success('Tạo tài khoản thành công')
-    setTimeout(() => router.push({ name: 'login' }), 3000)
+    setTimeout(() => router.push({ name: 'login' }), 2000)
   }
 }
 </script>

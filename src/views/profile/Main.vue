@@ -1,6 +1,6 @@
 <template>
   <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Update Profile</h2>
+    <h2 class="text-lg font-medium mr-auto">Cập nhật thông tin</h2>
   </div>
   <div class="grid grid-cols-12 gap-6">
     <!-- BEGIN: Profile Menu -->
@@ -59,12 +59,7 @@
             <SettingsIcon class="w-4 h-4 mr-2" /> Bảo mật 2 lớp
           </a>
         </div>
-        <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
-          <a class="flex items-center" href=""> <ActivityIcon class="w-4 h-4 mr-2" /> Email Settings </a>
-          <a class="flex items-center mt-5" href=""> <BoxIcon class="w-4 h-4 mr-2" /> Saved Credit Cards </a>
-          <a class="flex items-center mt-5" href=""> <LockIcon class="w-4 h-4 mr-2" /> Social Networks </a>
-          <a class="flex items-center mt-5" href=""> <SettingsIcon class="w-4 h-4 mr-2" /> Tax Information </a>
-        </div>
+
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400 flex">
           <button type="button" class="btn btn-primary py-1 px-2">New Group</button>
           <button type="button" class="btn btn-outline-secondary py-1 px-2 ml-auto">New Quick Link</button>

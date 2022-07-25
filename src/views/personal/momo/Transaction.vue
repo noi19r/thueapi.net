@@ -12,8 +12,8 @@
         <div class="sm:flex items-center sm:mr-4">
           <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Loại</label>
           <select
-            id="tabulator-html-filter-field"
-            v-model="filter.field"
+            id="tabulator-html-filter-type"
+            v-model="filter.type"
             class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="">Tất cả</option>
@@ -24,9 +24,9 @@
 
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
           <label class="flex-none mr-2">Tên/ Số điện thoại/ Nội dung</label>
+          <!-- v-model="filter.value" -->
           <input
-            id="tabulator-html-filter-value"
-            v-model="filter.value"
+            id="tabulator-html-filter-search"
             type="text"
             class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"
             placeholder="Search..."
@@ -103,13 +103,14 @@ import xlsx from 'xlsx'
 import { createIcons, icons } from 'lucide'
 import Tabulator from 'tabulator-tables'
 import dom from '@left4code/tw-starter/dist/js/dom'
+import { helper as $h } from '@/utils/helper'
+import router from '@/router'
+import { dateFilter } from '@/global-components/litepicker/index'
 
 const tableRef = ref()
 const tabulator = ref()
 const filter = reactive({
-  field: '',
-  type: 'like',
-  value: '',
+  type: '',
   start: new Date(new Date().setMonth(new Date().getMonth() - 1)).getTime(),
   end: new Date().getTime()
 })
@@ -119,19 +120,14 @@ const salesReportFilter = ref()
 const imageAssets = import.meta.globEager(`/src/assets/images/*.{jpg,jpeg,png,svg}`)
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
-    ajaxURL: '/api/bank/momo/transaction',
-
-    ajaxRequesting: (url, params, data) => {},
+    ajaxURL: `/api/bank/momo/transaction/${router.currentRoute.value.params.id}`,
     ajaxConfig: {
-      data: {
-        _id: '62c8317c915ff02f251907b2'
-      },
       headers: {
         authorization: `Bearer ${localStorage.getItem('token')}`
       }
     },
     ajaxFiltering: true,
-    ajaxSorting: true,
+    ajaxSorting: false,
     printAsHtml: true,
     printStyled: true,
 
@@ -158,7 +154,7 @@ const initTabulator = () => {
         responsive: 0,
         title: 'Mã Giao Dịch',
         minWidth: 200,
-        field: 'id',
+        field: 'transId',
 
         vertAlign: 'middle',
         print: false,
@@ -173,8 +169,8 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().name}</div>
-                <div class="text-slate-500 text-xs whitespace-nowrap">${cell.getData().category}</div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().partnerId}</div>
+                <div class="text-slate-500 text-xs whitespace-nowrap">${cell.getData().partnerName}</div>
               </div>`
         }
       },
@@ -182,7 +178,7 @@ const initTabulator = () => {
       {
         title: 'Số Tiền',
         minWidth: 200,
-        field: 'images',
+        field: 'amount',
 
         hozAlign: 'center',
         vertAlign: 'middle',
@@ -190,25 +186,28 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div class="flex items-center lg:justify-center ${
-            cell.getData().status ? 'text-success' : 'text-danger'
+            cell.getData().io == 1 ? 'text-success' : 'text-danger'
           }">
-              ${cell.getData().status ? cell.getData().remaining_stock : cell.getData().remaining_stock * -1}
+              ${$h.formatCurrency(cell.getData().amount * cell.getData().io)}
               </div>`
         }
       },
       {
         title: 'Số Dư',
         minWidth: 200,
-        field: 'remaining_stock',
+        field: 'postBalance',
         hozAlign: 'center',
         vertAlign: 'middle',
         print: false,
-        download: false
+        download: false,
+        formatter(cell) {
+          return $h.formatCurrency(cell.getData().postBalance)
+        }
       },
       {
         title: 'Nội Dung',
-        minWidth: 200,
-        field: 'category',
+        minWidth: 500,
+        field: 'comment',
         hozAlign: 'center',
         vertAlign: 'middle',
         print: false,
@@ -224,9 +223,9 @@ const initTabulator = () => {
         vertAlign: 'middle',
         print: false,
         download: false,
-        formatter() {
+        formatter(cell) {
           return `<div class="flex lg:justify-center items-center">
-                10:12 - 12/12/2022
+                ${$h.formatDate(cell.getData().time, 'DD/MM/YYYY HH:mm')}
               </div>`
         }
       },
@@ -300,6 +299,11 @@ const initTabulator = () => {
         'stroke-width': 1.5,
         nameAttr: 'data-lucide'
       })
+    },
+    ajaxURLGenerator: function (url, config, params) {
+      var type = dom('#tabulator-html-filter-type').val()
+
+      return url + '?' + new URLSearchParams({ ...params, type, start: dateFilter.start, end: dateFilter.end })
     }
   })
 }
@@ -318,14 +322,12 @@ const reInitOnResizeWindow = () => {
 
 // Filter function
 const onFilter = () => {
-  tabulator.value.setFilter(filter.field, filter.type, filter.value)
+  tabulator.value.setFilter('comment', 'like', 'a')
 }
 
 // On reset filter
 const onResetFilter = () => {
-  filter.field = 'name'
-  filter.type = 'like'
-  filter.value = ''
+  filter.type = ''
   onFilter()
 }
 

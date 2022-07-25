@@ -10,8 +10,10 @@
       </div>
       <!-- <div class="hidden xl:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div> -->
       <div class="hidden xl:block mx-auto text-slate-500"></div>
-      <div @click.prevent="headerFooterModalPreview = true" class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
-        <button class="btn btn-primary shadow-md mr-2"><PlusIcon class="w-4 h-4 mr-2" />Thêm Tài Khoản</button>
+      <div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+        <button @click.prevent="headerFooterModalPreview = true" class="btn btn-primary shadow-md mr-2">
+          <PlusIcon class="w-4 h-4 mr-2" />Thêm Tài Khoản
+        </button>
       </div>
       <!-- BEGIN: Modal Content -->
       <Modal :show="headerFooterModalPreview" @hidden="headerFooterModalPreview = false">
@@ -20,24 +22,15 @@
         </ModalHeader>
         <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
           <div class="col-span-12">
-            <label for="modal-form-1" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" v-model="formWallet.phone" :disabled="Boolean(formWallet._id)" />
-          </div>
-          <div class="col-span-12 sm:col-span-6" v-if="formWallet._id">
-            <label for="modal-form-1" class="form-label">Mật khẩu</label>
-            <input type="text" class="form-control" v-model="formWallet.password" />
-          </div>
-          <div class="col-span-12 sm:col-span-6" v-if="formWallet._id">
-            <label for="modal-form-1" class="form-label">OTP</label>
-            <input type="text" class="form-control" v-model="formWallet.otp" />
+            <label for="modal-form-1" class="form-label">Tên đăng nhập</label>
+            <input type="text" class="form-control" v-model="formBank.username" />
           </div>
         </ModalBody>
         <ModalFooter>
-          <button type="button" @click.prevent="cancelModel" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
-          <button v-if="!formWallet._id" type="button" @click.prevent="getOTPWallet" class="btn btn-primary w-20">
-            Lấy OTP
+          <button type="button" @click="headerFooterModalPreview = false" class="btn btn-outline-secondary w-20 mr-1">
+            Huỷ
           </button>
-          <button v-else type="button" @click.prevent="confirmOTPWallet" class="btn btn-primary w-30">Xác nhận</button>
+          <button type="button" @click.prevent="createAccountBank" class="btn btn-primary w-20">Lưu</button>
         </ModalFooter>
       </Modal>
       <!-- END: Modal Content -->
@@ -48,7 +41,6 @@
         <thead>
           <tr>
             <th class="whitespace-nowrap">Thông Tin</th>
-            <th class="text-center whitespace-nowrap">Số Dư</th>
 
             <th class="text-center whitespace-nowrap">Ngày Hết Hạn</th>
             <th class="text-center whitespace-nowrap">Trạng Thái</th>
@@ -59,12 +51,9 @@
           <tr v-for="(item, itemKey) in isData" :key="itemKey" class="intro-x">
             <td class="whitespace-nowrap !py-4 pr-20">
               <div class="font-medium decoration-dotted whitespace-nowrap">
-                {{ item.phone }}
+                {{ item.username }}
               </div>
               <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">{{ item.name }}</div>
-            </td>
-            <td class="whitespace-nowrap font-medium text-center text-primary">
-              {{ $h.formatCurrency(item.balance) }} vnđ
             </td>
 
             <td class="text-center">
@@ -86,20 +75,6 @@
             </td>
             <td class="table-report__action">
               <div class="flex justify-center items-center">
-                <router-link
-                  v-if="item.status == 1"
-                  :to="{ name: 'side-menu-personal-zalopay-history', params: { id: item._id } }"
-                  ><a class="flex items-center text-primary whitespace-nowrap mr-5" href="javascript:;">
-                    <ListIcon class="w-4 h-4 mr-1" /> Lịch Sử
-                  </a>
-                </router-link>
-                <a
-                  v-if="item.status == 1"
-                  class="flex items-center text-primary whitespace-nowrap mr-5"
-                  href="javascript:;"
-                >
-                  <DollarSignIcon class="w-4 h-4 mr-1" /> Chuyển Tiền
-                </a>
                 <a
                   v-if="item.status == 1"
                   class="flex items-center whitespace-nowrap mr-5 font-medium"
@@ -157,21 +132,16 @@
 
 <script setup>
 import { helper as $h } from '@/utils/helper'
-import { ref, onMounted } from 'vue'
-import { bankAccount, deleteBankAccount, updateBankAccount, getOTP, confirmOTP } from '@/api'
-import { toast } from '../../../plugins/toast'
+import { ref, onMounted, toRaw } from 'vue'
+import { bankAccount, deleteBankAccount, updateBankAccount, createBankAccount } from '@/api'
+import { toast } from '@/plugins/toast'
 const deleteConfirmationModal = ref(false)
-const headerFooterModalPreview = ref(false)
-const formWallet = ref({
-  phone: '',
-  password: '',
-  otp: '',
-  _id: ''
-})
-
 const isData = ref([])
 const isModel = ref('')
-
+const formBank = ref({
+  username: ''
+})
+const headerFooterModalPreview = ref(false)
 const isLogError = ref({
   0: 'Tạm ngưng',
   1: 'Hoạt động',
@@ -202,37 +172,19 @@ const updateStatus = async (bankId, status) => {
   toast.success('Thay đổi trạng thái thành công.')
   getDataAccount()
 }
-
-const cancelModel = () => {
-  formWallet.value = {
-    phone: '',
-    password: '',
-    otp: '',
-    _id: ''
-  }
+const createAccountBank = async () => {
   headerFooterModalPreview.value = false
+
+  await createBankAccount('mbb', formBank.value)
+  toast.success('Thêm tài khoản thành công.')
+
+  getDataAccount()
 }
 
 const getDataAccount = async () => {
-  let data = await bankAccount('zalopay')
+  let data = await bankAccount('mbb')
   isData.value = data.list
 }
-const getOTPWallet = async () => {
-  let data = await getOTP('zalopay', {
-    phone: formWallet.value.phone
-  })
-  formWallet.value._id = data._id
-  toast.success('Gửi mã xác nhận thành công.')
-  getDataAccount()
-}
-
-const confirmOTPWallet = async () => {
-  await confirmOTP('zalopay', formWallet.value)
-  cancelModel()
-  toast.success('Thêm tài khoản thành công.')
-  getDataAccount()
-}
-
 onMounted(() => {
   getDataAccount()
 })

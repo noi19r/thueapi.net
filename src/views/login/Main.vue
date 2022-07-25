@@ -138,7 +138,7 @@ const save = async () => {
 
     await userStore.setUserInfo()
     toast.success('Đăng nhập thành công')
-    setTimeout(() => router.push({ name: 'side-menu-dashboard' }), 3000)
+    setTimeout(() => router.push({ name: 'side-menu-dashboard' }), 2000)
   }
 }
 onMounted(() => {
