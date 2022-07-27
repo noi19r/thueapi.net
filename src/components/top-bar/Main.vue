@@ -74,10 +74,10 @@
           >
             <DropdownHeader tag="div" class="!font-normal">
               <div class="font-medium">
-                {{ $f()[0].users[0].name }}
+                {{ userStore.userInfoMe.name }}
               </div>
               <div class="text-xs text-white/60 mt-0.5 dark:text-slate-500">
-                {{ $f()[0].jobs[0] }}
+                Số dư: {{ $h.formatCurrency(userStore.userInfoMe.amount) }} vnđ
               </div>
             </DropdownHeader>
             <DropdownDivider class="border-white/[0.08]" />
@@ -107,6 +107,7 @@ import { ref, computed } from 'vue'
 import { logout } from '@/api'
 import router from '@/router'
 import { useUserStore } from '@/stores/user'
+import { helper as $h } from '@/utils/helper'
 const userStore = useUserStore()
 
 const searchDropdown = ref(false)
