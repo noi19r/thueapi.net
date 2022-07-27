@@ -5,7 +5,7 @@ const toastController = {
     if (typeof props === 'string') props = { title: 'Thành công', description: props }
     return createToast(props, {
       type: 'success',
-      timeout: props.timeout || 3000
+      timeout: props.timeout || 4000
     })
   },
   info(props) {
@@ -18,21 +18,21 @@ const toastController = {
       Object.assign(props, { title: 'Thất bại' })
     return createToast(props, {
       type: 'danger',
-      timeout: props.timeout || 3000
+      timeout: props.timeout || 4000
     })
   },
   warning(props) {
     if (typeof props === 'string') props = { title: 'Cảnh báo', description: props }
     return createToast(props, {
       type: 'warning',
-      timeout: props.timeout || 3000
+      timeout: props.timeout || 4000
     })
   },
   denied(props) {
     if (typeof props === 'string') props = { description: props }
     return createToast(props, {
       type: 'default',
-      timeout: props.timeout || 3000
+      timeout: props.timeout || 4000
     })
   }
 }
