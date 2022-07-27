@@ -14,7 +14,7 @@
             <div class="font-medium text-base">
               {{ userInfo.name }}
             </div>
-            <div class="text-slate-500">{{ userInfo.roles }}</div>
+            <div class="text-slate-500">{{ userInfo.roles.at(-1) }}</div>
           </div>
         </div>
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
