@@ -184,6 +184,13 @@
                   Kích Hoạt
                 </a>
                 <a
+                  class="flex items-center text-primary whitespace-nowrap mr-5"
+                  href="javascript:;"
+                  @click.prevent="showModelExtend(item._id, item.phone)"
+                >
+                  <DollarSignIcon class="w-4 h-4 mr-1" /> Gia Hạn
+                </a>
+                <a
                   class="flex items-center text-danger whitespace-nowrap"
                   href="javascript:;"
                   @click="showModelDelete(item._id)"
@@ -218,6 +225,33 @@
     </ModalBody>
   </Modal>
   <!-- END: Delete Confirmation Modal -->
+
+  <!-- BEGIN: Modal Content -->
+  <Modal :show="isModelExtend" @hidden="isModelExtend = false">
+    <ModalHeader>
+      <h2 class="font-medium text-base mr-auto">Gia hạn sử dụng</h2>
+    </ModalHeader>
+    <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
+      <div class="col-span-12 sm:col-span-6">
+        <label for="modal-form-6" class="form-label">Ví Momo: </label>
+        <input type="text" class="form-control text-primary" :value="formExtend.phone" disabled />
+      </div>
+      <div class="col-span-12 sm:col-span-6">
+        <label for="modal-form-6" class="form-label">Thời hạn</label>
+        <select v-model="formExtend.period" class="form-select">
+          <option value="1">1 tháng</option>
+          <option value="2">2 tháng</option>
+          <option value="3">3 tháng</option>
+          <option value="6">6 tháng</option>
+        </select>
+      </div>
+    </ModalBody>
+    <ModalFooter>
+      <button type="button" @click="isModelExtend = false" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
+      <button type="button" class="btn btn-primary w-25" @click.prevent="confirmExtend">Gia hạn</button>
+    </ModalFooter>
+  </Modal>
+  <!-- END: Modal Content -->
 </template>
 
 <script setup>
@@ -230,7 +264,8 @@ import {
   getOTP,
   confirmOTP,
   checkNameTranfer,
-  tranferWallet
+  tranferWallet,
+  deckExtend
 } from '@/api'
 import { toast } from '../../../plugins/toast'
 import { useUserStore } from '@/stores/user'
@@ -254,6 +289,13 @@ const formTransferWallet = ref({
   NAME: '',
   _id: ''
 })
+
+const formExtend = ref({
+  _id: '',
+  period: 1,
+  phone: ''
+})
+const isModelExtend = ref(false)
 
 const isData = ref([])
 const isModel = ref('')
@@ -342,6 +384,22 @@ const checkNameTransferWallet = async () => {
     numberPhone: formTransferWallet.value.numberPhone
   })
   formTransferWallet.value.NAME = data.NAME
+}
+
+const showModelExtend = (bankId, phone) => {
+  formExtend.value = {
+    _id: bankId,
+    period: 1,
+    phone: phone
+  }
+  isModelExtend.value = true
+}
+
+const confirmExtend = async () => {
+  isModelExtend.value = false
+  await deckExtend(formExtend.value._id, { period: formExtend.value.period })
+  getDataAccount()
+  toast.success('Gia hạn thành công.')
 }
 
 const confirmTransferWallet = async () => {

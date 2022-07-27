@@ -328,6 +328,7 @@ const onFilter = () => {
 // On reset filter
 const onResetFilter = () => {
   filter.type = ''
+
   onFilter()
 }
 

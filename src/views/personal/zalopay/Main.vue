@@ -119,6 +119,13 @@
                   Kích Hoạt
                 </a>
                 <a
+                  class="flex items-center text-primary whitespace-nowrap mr-5"
+                  href="javascript:;"
+                  @click.prevent="showModelExtend(item._id, item.phone)"
+                >
+                  <DollarSignIcon class="w-4 h-4 mr-1" /> Gia Hạn
+                </a>
+                <a
                   class="flex items-center text-danger whitespace-nowrap"
                   href="javascript:;"
                   @click="showModelDelete(item._id)"
@@ -153,12 +160,38 @@
     </ModalBody>
   </Modal>
   <!-- END: Delete Confirmation Modal -->
+  <!-- BEGIN: Modal Content -->
+  <Modal :show="isModelExtend" @hidden="isModelExtend = false">
+    <ModalHeader>
+      <h2 class="font-medium text-base mr-auto">Gia hạn sử dụng</h2>
+    </ModalHeader>
+    <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
+      <div class="col-span-12 sm:col-span-6">
+        <label for="modal-form-6" class="form-label">Ví ZaloPay: </label>
+        <input type="text" class="form-control text-primary" :value="formExtend.phone" disabled />
+      </div>
+      <div class="col-span-12 sm:col-span-6">
+        <label for="modal-form-6" class="form-label">Thời hạn</label>
+        <select v-model="formExtend.period" class="form-select">
+          <option value="1">1 tháng</option>
+          <option value="2">2 tháng</option>
+          <option value="3">3 tháng</option>
+          <option value="6">6 tháng</option>
+        </select>
+      </div>
+    </ModalBody>
+    <ModalFooter>
+      <button type="button" @click="isModelExtend = false" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
+      <button type="button" class="btn btn-primary w-25" @click.prevent="confirmExtend">Gia hạn</button>
+    </ModalFooter>
+  </Modal>
+  <!-- END: Modal Content -->
 </template>
 
 <script setup>
 import { helper as $h } from '@/utils/helper'
 import { ref, onMounted } from 'vue'
-import { bankAccount, deleteBankAccount, updateBankAccount, getOTP, confirmOTP } from '@/api'
+import { bankAccount, deleteBankAccount, updateBankAccount, getOTP, confirmOTP, deckExtend } from '@/api'
 import { toast } from '../../../plugins/toast'
 const deleteConfirmationModal = ref(false)
 const headerFooterModalPreview = ref(false)
@@ -231,6 +264,29 @@ const confirmOTPWallet = async () => {
   cancelModel()
   toast.success('Thêm tài khoản thành công.')
   getDataAccount()
+}
+
+const formExtend = ref({
+  _id: '',
+  period: 1,
+  phone: ''
+})
+const isModelExtend = ref(false)
+
+const showModelExtend = (bankId, phone) => {
+  formExtend.value = {
+    _id: bankId,
+    period: 1,
+    phone: phone
+  }
+  isModelExtend.value = true
+}
+
+const confirmExtend = async () => {
+  isModelExtend.value = false
+  await deckExtend(formExtend.value._id, { period: formExtend.value.period })
+  getDataAccount()
+  toast.success('Gia hạn thành công.')
 }
 
 onMounted(() => {
