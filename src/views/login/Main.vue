@@ -73,7 +73,9 @@
                 <a href="">Quên mật khẩu?</a>
               </div>
               <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Đăng Nhập</button>
+                <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top" :disabled="isLoading">
+                  Đăng Nhập
+                </button>
 
                 <router-link
                   to="/register"
@@ -99,7 +101,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, toRefs, toRaw } from 'vue'
+import { onMounted, reactive, toRefs, toRaw, ref } from 'vue'
 import DarkModeSwitcher from '@/components/dark-mode-switcher/Main.vue'
 import { required, minLength, email } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
@@ -108,7 +110,7 @@ import dom from '@left4code/tw-starter/dist/js/dom'
 import { useUserStore } from '@/stores/user'
 import { login } from '@/api'
 import router from '@/router'
-
+const isLoading = ref(false)
 const userStore = useUserStore()
 const formData = reactive({
   email: '',
@@ -137,6 +139,7 @@ const save = async () => {
     userStore.setToken({ ...result, remember: true })
 
     await userStore.setUserInfo()
+    isLoading.value = true
     toast.success('Đăng nhập thành công')
     setTimeout(() => router.push({ name: 'side-menu-dashboard' }), 2000)
   }

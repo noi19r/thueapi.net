@@ -113,16 +113,18 @@
               </div>
               <div class="intro-x flex items-center text-slate-600 dark:text-slate-500 mt-4 text-xs sm:text-sm">
                 <input id="remember-me" type="checkbox" class="form-check-input border mr-2" />
-                <label class="cursor-pointer select-none" for="remember-me">I agree to the Envato</label>
-                <a class="text-primary dark:text-slate-200 ml-1" href="">Privacy Policy</a>.
+                <label class="cursor-pointer select-none" for="remember-me">Tôi đồng ý với những</label>
+                <a class="text-primary dark:text-slate-200 ml-1" href="">Điều Khoản Dịch Vụ</a>.
               </div>
               <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Register</button>
+                <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top" :disabled="isLoading">
+                  Đăng Ký
+                </button>
                 <router-link
                   to="/login"
                   class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
                 >
-                  Sign in
+                  Đăng Nhập
                 </router-link>
               </div>
             </form>
@@ -136,7 +138,7 @@
 
 <script setup>
 import DarkModeSwitcher from '@/components/dark-mode-switcher/Main.vue'
-import { onMounted, reactive, toRefs, computed, toRaw } from 'vue'
+import { onMounted, reactive, toRefs, computed, toRaw, ref } from 'vue'
 import { required, minLength, maxLength, email, sameAs, helpers } from '@vuelidate/validators'
 
 import { useVuelidate } from '@vuelidate/core'
@@ -147,7 +149,7 @@ import { register } from '@/api'
 import router from '@/router'
 import { toast } from '../../plugins/toast'
 const userStore = useUserStore()
-
+const isLoading = ref(false)
 onMounted(() => {
   dom('body').removeClass('main').removeClass('error-page').addClass('login')
 })
@@ -209,7 +211,7 @@ const save = async () => {
       phone: data.phoneNumber,
       password: data.password.pass
     })
-
+    isLoading.value = true
     toast.success('Tạo tài khoản thành công')
     setTimeout(() => router.push({ name: 'login' }), 2000)
   }

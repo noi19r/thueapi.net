@@ -34,10 +34,24 @@
         </ModalBody>
         <ModalFooter>
           <button type="button" @click.prevent="cancelModel" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
-          <button v-if="!formWallet._id" type="button" @click.prevent="getOTPWallet" class="btn btn-primary w-20">
+          <button
+            v-if="!formWallet._id"
+            type="button"
+            @click.prevent="getOTPWallet"
+            class="btn btn-primary w-20"
+            :disabled="isLoading"
+          >
             Lấy OTP
           </button>
-          <button v-else type="button" @click.prevent="confirmOTPWallet" class="btn btn-primary w-30">Xác nhận</button>
+          <button
+            v-else
+            type="button"
+            @click.prevent="confirmOTPWallet"
+            class="btn btn-primary w-30"
+            :disabled="isLoading"
+          >
+            Xác nhận
+          </button>
         </ModalFooter>
       </Modal>
       <!-- END: Modal Content -->
@@ -83,7 +97,12 @@
           </div>
         </ModalBody>
         <ModalFooter>
-          <button type="button" @click.prevent="cancelModelTransfer" class="btn btn-outline-secondary w-20 mr-1">
+          <button
+            type="button"
+            @click.prevent="cancelModelTransfer"
+            class="btn btn-outline-secondary w-20 mr-1"
+            :disabled="isLoading"
+          >
             Huỷ
           </button>
           <button
@@ -91,10 +110,17 @@
             type="button"
             @click.prevent="checkNameTransferWallet"
             class="btn btn-primary w-30"
+            :disabled="isLoading"
           >
             Kiểm Tra
           </button>
-          <button v-else type="button" @click.prevent="confirmTransferWallet" class="btn btn-primary w-30">
+          <button
+            v-else
+            type="button"
+            @click.prevent="confirmTransferWallet"
+            class="btn btn-primary w-30"
+            :disabled="isLoading"
+          >
             Chuyển tiền
           </button>
         </ModalFooter>
@@ -220,7 +246,9 @@
         <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
           Huỷ
         </button>
-        <button @click.prevent="confirmDelete" type="button" class="btn btn-danger w-24">Xác Nhận</button>
+        <button @click.prevent="confirmDelete" type="button" class="btn btn-danger w-24" :disabled="isLoading">
+          Xác Nhận
+        </button>
       </div>
     </ModalBody>
   </Modal>
@@ -248,7 +276,9 @@
     </ModalBody>
     <ModalFooter>
       <button type="button" @click="isModelExtend = false" class="btn btn-outline-secondary w-20 mr-1">Huỷ</button>
-      <button type="button" class="btn btn-primary w-25" @click.prevent="confirmExtend">Gia hạn</button>
+      <button type="button" class="btn btn-primary w-25" @click.prevent="confirmExtend" :disabled="isLoading">
+        Gia hạn
+      </button>
     </ModalFooter>
   </Modal>
   <!-- END: Modal Content -->
@@ -267,6 +297,7 @@ import {
   tranferWallet,
   deckExtend
 } from '@/api'
+import { isLoading, setCheckLoading } from '../../../plugins/loading'
 import { toast } from '../../../plugins/toast'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
@@ -320,7 +351,7 @@ const showModelDelete = async (bankId) => {
 
 const confirmDelete = async () => {
   deleteConfirmationModal.value = false
-
+  setCheckLoading(true)
   await deleteBankAccount(isModel.value)
   toast.success('Xoá tài khoản thành công.')
   getDataAccount()
@@ -332,6 +363,7 @@ const updateStatus = async (bankId, status) => {
   if (status == 0) {
     isStatus = 1
   }
+  setCheckLoading(true)
   await updateBankAccount(bankId, { status: isStatus })
   toast.success('Thay đổi trạng thái thành công.')
   getDataAccount()
@@ -363,6 +395,7 @@ const getDataAccount = async () => {
   isData.value = data.list
 }
 const getOTPWallet = async () => {
+  setCheckLoading(true)
   let data = await getOTP('momo', {
     phone: formWallet.value.phone
   })
@@ -372,6 +405,7 @@ const getOTPWallet = async () => {
 }
 
 const confirmOTPWallet = async () => {
+  setCheckLoading(true)
   await confirmOTP('momo', formWallet.value)
   cancelModel()
   toast.success('Thêm tài khoản thành công.')
@@ -379,6 +413,7 @@ const confirmOTPWallet = async () => {
 }
 
 const checkNameTransferWallet = async () => {
+  setCheckLoading(true)
   let data = await checkNameTranfer('momo', {
     _id: formTransferWallet.value._id,
     numberPhone: formTransferWallet.value.numberPhone
@@ -397,6 +432,7 @@ const showModelExtend = (bankId, phone) => {
 
 const confirmExtend = async () => {
   isModelExtend.value = false
+  setCheckLoading(true)
   await deckExtend(formExtend.value._id, { period: formExtend.value.period })
   getDataAccount()
   toast.success('Gia hạn thành công.')
@@ -407,7 +443,7 @@ const confirmTransferWallet = async () => {
     ...formTransferWallet.value
   }
   if (!userStore.userInfoMe.is2FA) delete data.otp
-
+  setCheckLoading(true)
   await tranferWallet('momo', data)
   cancelModelTransfer()
   toast.success('Chuyển tiền thành công.')

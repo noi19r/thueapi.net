@@ -14,7 +14,7 @@
             <div class="font-medium text-base">
               {{ userInfo.name }}
             </div>
-            <div class="text-slate-500">{{ userInfo.roles.at(-1) }}</div>
+            <div class="text-slate-500">{{ userInfo?.roles && userInfo?.roles.sort()[0] }}</div>
           </div>
         </div>
         <div class="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
@@ -153,17 +153,22 @@
                         type="text"
                         class="form-control"
                         placeholder=""
-                        :value="userInfo.telegram.id"
+                        :value="userInfo.telegram?.id || ''"
                         disabled
                       />
                     </div>
                   </div>
                 </div>
                 <div class="flex justify-end mt-4">
-                  <button class="btn btn-primary w-25 mr-auto">Lưu thông tin</button>
-                  <a href="" class="text-danger flex items-center">
+                  <button class="btn btn-primary w-25 mr-auto" :disabled="isLoading">Lưu thông tin</button>
+                  <button
+                    type="submit"
+                    :disabled="isLoading"
+                    class="text-danger flex items-center"
+                    @click.prevent="deleteAccount"
+                  >
                     <Trash2Icon class="w-4 h-4 mr-1" /> Delete Account
-                  </a>
+                  </button>
                 </div>
               </form>
             </div>
@@ -273,12 +278,12 @@
                         tag="img"
                         alt="Midone - HTML Admin Template"
                         class="rounded-lg border-1 border-white shadow-md tooltip"
-                        :src="`http://localhost:8080/src/assets/images/preview-10.jpg`"
+                        :src="`/assets/images/${deck.type}.png`"
                         :content="`Tài Khoản Cá Nhân`"
                       />
                     </div>
 
-                    <a class="font-medium whitespace-nowrap ml-4">{{ deck.type }}</a>
+                    <a class="font-medium whitespace-nowrap ml-4">{{ deck.name }}</a>
                   </div>
                 </td>
 
@@ -354,12 +359,15 @@ import { useVuelidate } from '@vuelidate/core'
 
 import { useUserStore } from '@/stores/user'
 import { helper as $h } from '@/utils/helper'
-import { qr2FA, changePassword, verify2FA, updateTelegram, deckList } from '@/api'
+import { qr2FA, changePassword, verify2FA, updateTelegram, deckList, deleteUser } from '@/api'
 import { toast } from '../../plugins/toast'
+import { isLoading, setCheckLoading } from '../../plugins/loading'
+import router from '@/router'
 
 const userStore = useUserStore()
 
 const userInfo = computed(() => userStore.userInfoMe)
+
 const select = ref('1')
 const activeTab = ref('info')
 const qrcode = ref('')
@@ -454,11 +462,21 @@ const saveTelegram = async () => {
   if (validateTelegram.value.$invalid) {
     toast.danger('Vui lòng kiểm tra lại thông tin')
   } else {
+    setCheckLoading(true)
+
     let data = toRaw(formTelegramData)
     await updateTelegram(data)
+
     userStore.setUserInfo()
     toast.success('Cập nhật thông tin thành công')
   }
+}
+
+const deleteAccount = async () => {
+  setCheckLoading(true)
+  await deleteUser()
+  userStore.clearUser()
+  router.push({ name: 'login' })
 }
 
 onMounted(async () => {

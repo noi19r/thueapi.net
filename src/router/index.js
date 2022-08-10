@@ -6,6 +6,7 @@ import Dashboard from '../views/dashboard/Main.vue'
 import Login from '../views/login/Main.vue'
 import Register from '../views/register/Main.vue'
 import ErrorPage from '../views/error-page/Main.vue'
+import Error500 from '../views/error-page/500.vue'
 //TODO
 
 import Momo from '../views/personal/momo/Main.vue'
@@ -26,6 +27,8 @@ import Deposit from '../views/deposit/Main.vue'
 
 import Profile from '../views/profile/Main.vue'
 
+import AdminUsers from '../views/admin/Users.vue'
+
 const routes = [
   {
     path: '/',
@@ -35,6 +38,16 @@ const routes = [
         path: '/',
         name: 'side-menu-dashboard',
         component: Dashboard
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'users',
+            name: 'side-menu-admin-users',
+            component: AdminUsers
+          }
+        ]
       },
 
       {
@@ -124,6 +137,11 @@ const routes = [
     component: Register
   },
   {
+    path: '/500',
+    name: 'error-500',
+    component: Error500
+  },
+  {
     path: '/error-page',
     name: 'error-page',
     component: ErrorPage
@@ -145,6 +163,7 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   if (
+    to.name != 'error-500' &&
     to.name != 'error-page' &&
     to.name != 'login' &&
     to.name != 'register' &&

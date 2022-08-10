@@ -34,7 +34,7 @@
           <div class="w-64 h-64 float-left image-fit mx-auto">
             <img
               alt="Midone Tailwind HTML Admin Template"
-              :src="'https://img.vietqr.io/image/vietinbank-113366668888-qr_only.jpg?amount=790000&addInfo=dong%20qop%20quy%20vac%20xin&accountName=Quy%20Vac%20Xin%20Covid'"
+              :src="`https://img.vietqr.io/image/acb-${isSyntax.bank.accountNumber}-qr_only.jpg?amount=10000&addInfo=${isSyntax.syntax}&accountName=${isSyntax.bank.name}`"
               data-action="zoom"
               class="w-full rounded-md"
             />
@@ -57,7 +57,7 @@
           <div class="w-64 h-64 float-left image-fit mx-auto">
             <img
               alt="Midone Tailwind HTML Admin Template"
-              :src="'https://img.vietqr.io/image/vietinbank-113366668888-qr_only.jpg?amount=790000&addInfo=dong%20qop%20quy%20vac%20xin&accountName=Quy%20Vac%20Xin%20Covid'"
+              :src="`https://chart.googleapis.com/chart?chs=480x480&cht=qr&choe=UTF-8&chl=2|99|${isSyntax.wallet.phone}|NGUYEN VAN A|admin@gmail.com|0|0|10000|${isSyntax.syntax}|transfer_myqr`"
               data-action="zoom"
               class="w-full rounded-md"
             />

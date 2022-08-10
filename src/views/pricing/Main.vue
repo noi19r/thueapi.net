@@ -22,7 +22,7 @@
                     tag="img"
                     alt="Midone - HTML Admin Template"
                     class="rounded-lg border-1 border-white shadow-md tooltip"
-                    :src="$f()[9].photos[0]"
+                    :src="`/assets/images/${price.type}.png`"
                     :content="`Tài Khoản Cá Nhân`"
                   />
                 </div>
