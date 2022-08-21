@@ -42,8 +42,10 @@ function requestService(config) {
     },
     (error) => {
       setLoading(false)
-
-      if (error.code == 'ECONNABORTED') {
+      if (error.code == 'ERR_NETWORK') {
+        router.replace({ name: 'error-500' })
+        return Promise.reject(error.message)
+      } else if (error.code == 'ECONNABORTED') {
         toast.danger('Thất bại, vui lòng thử lại sau ít phút.')
         return Promise.reject(error.message)
       }

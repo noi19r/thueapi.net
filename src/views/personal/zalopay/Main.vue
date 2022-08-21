@@ -86,6 +86,15 @@
             </td>
             <td class="table-report__action">
               <div class="flex justify-center items-center">
+                <a
+                  v-if="item.status == 1"
+                  class="flex items-center whitespace-nowrap mr-5 font-medium"
+                  href="javascript:;"
+                  @click.prevent="sendTokenToMail(item._id)"
+                >
+                  <PocketIcon class="w-4 h-4 mr-1" />
+                  Token
+                </a>
                 <router-link
                   v-if="item.status == 1"
                   :to="{ name: 'side-menu-personal-zalopay-history', params: { id: item._id } }"
@@ -191,7 +200,7 @@
 <script setup>
 import { helper as $h } from '@/utils/helper'
 import { ref, onMounted } from 'vue'
-import { bankAccount, deleteBankAccount, updateBankAccount, getOTP, confirmOTP, deckExtend } from '@/api'
+import { bankAccount, deleteBankAccount, updateBankAccount, getOTP, confirmOTP, deckExtend, getTokenBank } from '@/api'
 import { toast } from '../../../plugins/toast'
 const deleteConfirmationModal = ref(false)
 const headerFooterModalPreview = ref(false)
@@ -287,6 +296,11 @@ const confirmExtend = async () => {
   await deckExtend(formExtend.value._id, { period: formExtend.value.period })
   getDataAccount()
   toast.success('Gia hạn thành công.')
+}
+
+const sendTokenToMail = async (bankId) => {
+  await getTokenBank(bankId)
+  toast.success('Lấy token thành công, vui lòng kiểm tra email của bạn.')
 }
 
 onMounted(() => {

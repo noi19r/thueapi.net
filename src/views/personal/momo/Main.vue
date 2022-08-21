@@ -176,6 +176,15 @@
                     <BarChart2Icon class="w-4 h-4 mr-1" /> Thống Kê
                   </a>
                 </router-link> -->
+                <a
+                  v-if="item.status == 1"
+                  class="flex items-center whitespace-nowrap mr-5 font-medium"
+                  href="javascript:;"
+                  @click.prevent="sendTokenToMail(item._id)"
+                >
+                  <PocketIcon class="w-4 h-4 mr-1" />
+                  Token
+                </a>
                 <router-link
                   v-if="item.status == 1"
                   :to="{ name: 'side-menu-personal-momo-history', params: { id: item._id } }"
@@ -295,7 +304,8 @@ import {
   confirmOTP,
   checkNameTranfer,
   tranferWallet,
-  deckExtend
+  deckExtend,
+  getTokenBank
 } from '@/api'
 import { isLoading, setCheckLoading } from '../../../plugins/loading'
 import { toast } from '../../../plugins/toast'
@@ -447,6 +457,11 @@ const confirmTransferWallet = async () => {
   await tranferWallet('momo', data)
   cancelModelTransfer()
   toast.success('Chuyển tiền thành công.')
+}
+
+const sendTokenToMail = async (bankId) => {
+  await getTokenBank(bankId)
+  toast.success('Lấy token thành công, vui lòng kiểm tra email của bạn.')
 }
 
 onMounted(() => {

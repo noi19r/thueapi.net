@@ -5,9 +5,9 @@
   >
     <div class="h-full flex items-center">
       <!-- BEGIN: Logo -->
-      <a href="" class="-intro-x hidden md:flex">
+      <a href="/" class="-intro-x hidden md:flex">
         <img alt="Icewall Tailwind HTML Admin Template" class="w-6" src="@/assets/images/logo.svg" />
-        <span class="text-white text-lg ml-3"> Icewall </span>
+        <span class="text-white text-lg ml-3"> ThueApi.Net </span>
       </a>
       <!-- END: Logo -->
       <!-- BEGIN: Breadcrumb -->
@@ -32,7 +32,7 @@
         </DropdownToggle>
         <DropdownMenu class="notification-content pt-2">
           <DropdownContent tag="div" class="notification-content__box">
-            <div class="notification-content__title">Notifications</div>
+            <div class="notification-content__title">Thông báo</div>
             <div
               v-for="(faker, fakerKey) in $_.take($f(), 1)"
               :key="fakerKey"

@@ -7,7 +7,7 @@
         <div class="hidden xl:flex flex-col min-h-screen">
           <a href="" class="-intro-x flex items-center pt-5">
             <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="@/assets/images/logo.svg" />
-            <span class="text-white text-lg ml-3"> Icewall </span>
+            <span class="text-white text-lg ml-3"> ThueApi </span>
           </a>
           <div class="my-auto">
             <img

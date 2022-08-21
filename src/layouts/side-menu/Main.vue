@@ -104,6 +104,14 @@
               </li>
             </template>
             <!-- END: First Child -->
+            <li>
+              <a href="https://documenter.getpostman.com/view/18880880/VUjHM8Tr" class="side-menu" target="bank">
+                <div class="side-menu__icon">
+                  <Share2Icon />
+                </div>
+                <div class="side-menu__title">Tài liệu</div>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- END: Side Menu -->

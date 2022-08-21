@@ -37,69 +37,105 @@ const routes = [
       {
         path: '/',
         name: 'side-menu-dashboard',
+        meta: {
+          title: 'Trang chủ | ThueApi.Net'
+        },
         component: Dashboard
       },
-      {
-        path: 'admin',
-        children: [
-          {
-            path: 'users',
-            name: 'side-menu-admin-users',
-            component: AdminUsers
-          }
-        ]
-      },
+      // {
+      //   path: 'admin',
+      //   children: [
+      //     {
+      //       path: 'users',
+      //       name: 'side-menu-admin-users',
+      //       meta: {
+      //         title: 'Tổng quan | ThueApi.Net'
+      //       },
+      //       component: AdminUsers
+      //     }
+      //   ]
+      // },
 
       {
         path: 'personal',
         children: [
           {
+            meta: {
+              title: 'Ví MoMo | ThueApi.Net'
+            },
             path: 'momo',
             name: 'side-menu-personal-momo',
             component: Momo
           },
 
           {
+            meta: {
+              title: 'Lịch sử giao dịch MoMo | ThueApi.Net'
+            },
             path: 'momo/transaction/:id',
             name: 'side-menu-personal-momo-history',
             component: MomoTransaction
           },
           {
+            meta: {
+              title: 'Thống kê giao dịch MoMo | ThueApi.Net'
+            },
             path: 'momo/statistic/:id',
             name: 'side-menu-personal-momo-statistic',
             component: MomoStatistic
           },
           {
+            meta: {
+              title: 'Ví ZaloPay | ThueApi.Net'
+            },
             path: 'zalopay',
             name: 'side-menu-personal-zalopay',
             component: ZaloPay
           },
           {
+            meta: {
+              title: 'Lịch sử giao dịch ZaloPay | ThueApi.Net'
+            },
             path: 'zalopay/transaction/:id',
             name: 'side-menu-personal-zalopay-history',
             component: ZaloPayTransaction
           },
           {
+            meta: {
+              title: 'VietcomBank | ThueApi.Net'
+            },
             path: 'vcb',
             name: 'side-menu-personal-vcb',
             component: Vietcombank
           },
           {
+            meta: {
+              title: 'VietinBank | ThueApi.Net'
+            },
             path: 'vtb',
             name: 'side-menu-personal-vtb',
             component: Vietinbank
           },
           {
+            meta: {
+              title: 'TPBank | ThueApi.Net'
+            },
             path: 'tpb',
             name: 'side-menu-personal-tpb',
             component: TPBank
           },
           {
+            meta: {
+              title: 'ACB | ThueApi.Net'
+            },
             path: 'acb',
             name: 'side-menu-personal-acb',
             component: Acb
           },
           {
+            meta: {
+              title: 'MBBank | ThueApi.Net'
+            },
             path: 'mbb',
             name: 'side-menu-personal-mbb',
             component: MBBank
@@ -107,17 +143,26 @@ const routes = [
         ]
       },
       {
+        meta: {
+          title: 'Bảng giá | ThueApi.Net'
+        },
         path: 'pricing',
         name: 'side-menu-pricing',
         component: Pricing
       },
       {
+        meta: {
+          title: 'Nạp tiền | ThueApi.Net'
+        },
         path: 'deposit',
         name: 'side-menu-deposit',
         component: Deposit
       },
 
       {
+        meta: {
+          title: 'Thông tin tài khoản | ThueApi.Net'
+        },
         path: 'profile',
         name: 'side-menu-profile',
         component: Profile
@@ -127,26 +172,41 @@ const routes = [
   },
 
   {
+    meta: {
+      title: 'Đăng nhập | ThueApi.Net'
+    },
     path: '/login',
     name: 'login',
     component: Login
   },
   {
+    meta: {
+      title: 'Đăng ký | ThueApi.Net'
+    },
     path: '/register',
     name: 'register',
     component: Register
   },
   {
+    meta: {
+      title: 'Server Error | ThueApi.Net'
+    },
     path: '/500',
     name: 'error-500',
     component: Error500
   },
   {
+    meta: {
+      title: 'Not Found | ThueApi.Net'
+    },
     path: '/error-page',
     name: 'error-page',
     component: ErrorPage
   },
   {
+    meta: {
+      title: 'Not Found | ThueApi.Net'
+    },
     path: '/:pathMatch(.*)*',
     name: 'error-page',
     component: ErrorPage

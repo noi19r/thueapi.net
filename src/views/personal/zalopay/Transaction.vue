@@ -2,7 +2,7 @@
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Lịch Sử Giao Dịch</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <router-link to="/personal/momo"> <button class="btn btn-primary shadow-md mr-2">Trở Lại</button></router-link>
+      <router-link to="/personal/zalopay"> <button class="btn btn-primary shadow-md mr-2">Trở Lại</button></router-link>
     </div>
   </div>
   <!-- BEGIN: HTML Table Data -->

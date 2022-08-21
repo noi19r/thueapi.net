@@ -1,5 +1,7 @@
 import { api } from '@/axios'
 
+const getTokenBank = (bankId) => api({ url: `/bank/${bankId}/token`, method: 'get' })
+
 const bankAccount = (params) => api({ url: `/bank/${params}`, method: 'get' })
 
 const createBankAccount = (params, data) => api({ url: `/bank/${params}`, data, method: 'post' })
@@ -12,4 +14,12 @@ const transaction = (params, data) => api({ url: `/bank/${params}/transaction`, 
 
 const lastTransaction = () => api({ url: '/bank/lastTransaction', method: 'get' })
 
-export { bankAccount, createBankAccount, updateBankAccount, deleteBankAccount, transaction, lastTransaction }
+export {
+  bankAccount,
+  createBankAccount,
+  updateBankAccount,
+  deleteBankAccount,
+  transaction,
+  lastTransaction,
+  getTokenBank
+}
